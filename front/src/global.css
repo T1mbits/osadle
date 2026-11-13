@@ -1,0 +1,113 @@
+@font-face {
+    font-family: "LunchType21";
+    src: url("/fonts/Lunchtype21-Medium.ttf");
+}
+
+body {
+    --bg: #b2b2b2;
+    --text: white;
+}
+body#dark {
+    --bg: #626262;
+    --text: white;
+}
+
+:root,
+button,
+input {
+    font-family: "LunchType21", monospace;
+}
+
+body,
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    margin: 0;
+}
+
+a {
+    text-align: center;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 30px;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+#watermark {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 13px;
+    a {
+        text-decoration: underline;
+        font-size: 13px; /* ts is stupid */
+    }
+}
+
+h1,
+p {
+    margin: 0;
+}
+
+br {
+    margin: 15px;
+}
+
+button {
+    border-image: url("/images/slices/button.png") round;
+    border-image-slice: 60 fill;
+    border-width: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+input {
+    border-image: url("/images/slices/input.png") round;
+    border-image-slice: 40 fill;
+    border-width: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: transparent;
+    font-size: 20px;
+    outline: none;
+}
+
+#toggle-dark {
+    background-color: transparent;
+    border: none;
+    color: var(--text);
+    padding: 0;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.box {
+    background-color: white;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#dark .box {
+    background-color: #b2b2b2;
+    color: white;
+}
