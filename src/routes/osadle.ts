@@ -1,7 +1,6 @@
 import type { RouterType } from "itty-router";
 
 import { response, serverFault } from "../lib/responses.ts";
-import { sign } from "../lib/s3.ts";
 import { type History, sql } from "../lib/sql.ts";
 import { env } from "cloudflare:workers";
 
