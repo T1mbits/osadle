@@ -52,7 +52,7 @@ export function Results({
                             className="textButton"
                             onClick={() => {
                                 navigator.clipboard.writeText(
-                                    `**${title}**: ${"⬛".repeat(guessAmount - 1)}${correct ? "🩶" : "💥"} (${correct ? guessAmount : "X"}/5) \n> https://osadle.guhw.dev/)`,
+                                    `**${title}**: ${"⬛".repeat(guessAmount - 1)}${correct ? "🩶" : "💥"} (${correct ? guessAmount : "X"}/5) \n> https://osadle.guhw.dev/`,
                                 );
                                 alert("copied");
                             }}
