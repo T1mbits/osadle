@@ -1,0 +1,24 @@
+.darken,
+.results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.darken {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.results {
+    background-color: var(--bg);
+    color: var(--text);
+    border: black solid 1px;
+    padding: 15px;
+}
