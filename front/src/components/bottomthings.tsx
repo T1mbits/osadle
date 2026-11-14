@@ -13,6 +13,7 @@ export default function BottomThings() {
                     setDark(!dark);
                 }}
                 id="toggle-dark"
+                className="textButton"
             >
                 toggle dark mode
             </button>

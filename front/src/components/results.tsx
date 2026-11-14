@@ -46,7 +46,21 @@ export function Results({
                         again
                     </button>
                 ) : (
-                    <a href="#song-custom">keep playing?</a>
+                    <>
+                        <button
+                            type="button"
+                            className="textButton"
+                            onClick={() => {
+                                navigator.clipboard.writeText(
+                                    `**${title}**: ${"⬛".repeat(guessAmount - 1)}${correct ? "🩶" : "💥"} (${correct ? guessAmount : "X"}/5) \n> https://osadle.guhw.dev/)`,
+                                );
+                                alert("copied");
+                            }}
+                        >
+                            copy text (for discord)
+                        </button>
+                        <a href="#song-custom">keep playing?</a>
+                    </>
                 )}
             </div>
         </div>

@@ -86,11 +86,17 @@ input {
     outline: none;
 }
 
-#toggle-dark {
+.textButton {
     background-color: transparent;
     border: none;
     color: var(--text);
     padding: 0;
+}
+.textButton:hover {
+    text-decoration: underline;
+}
+
+#toggle-dark {
     position: absolute;
     bottom: 5px;
     right: 5px;

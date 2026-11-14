@@ -8,7 +8,6 @@ import useHash from "./hooks/useHash";
 import ErrorPage from "./pages/error";
 import GuessSong, { Custom } from "./pages/song";
 import { useToday } from "./hooks/useToday";
-import { api } from "./lib/api";
 
 export default function Main() {
     const dark = useDark();
@@ -69,7 +68,6 @@ export default function Main() {
             ),
         },
     ];
-    console.log(map, hash);
 
     return (
         <>
