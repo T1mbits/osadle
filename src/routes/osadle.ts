@@ -11,7 +11,13 @@ export function routes(app: RouterType) {
 		if (!last) return serverFault("nothing today");
 		const song = await sql.songs.get(env.osadle, last.songId);
 
+		const imgBase = new URL(
+			"/storage/v1/object/public/thumbnails/",
+			env.S3_ENDPOINT,
+		);
+
 		return response({
+			_: "you know what you're doing, don't you? don't do it !!",
 			day: last.day,
 			time: last.time,
 			answer: btoa(last.songId),
@@ -19,10 +25,13 @@ export function routes(app: RouterType) {
 			audio: await sign("music", song.audioHash, 360),
 
 			thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
-				return a.imageHash;
+				return {
+					id: a.songId,
+					name: a.commonName,
+					aliases: a.aliases,
+					image: new URL(a.imageHash, imgBase),
+				};
 			}),
-
-			base: new URL("/storage/v1/object/public/thumbnails/", env.S3_ENDPOINT),
 		});
 	});
 }

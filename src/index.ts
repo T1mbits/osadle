@@ -48,7 +48,7 @@ export default {
 		const last: null | History = await sql.history.last(env.osadle);
 		if (last == null || last.time + ONE_DAY < Math.ceil(Date.now())) {
 			const nextDay = (last?.day ?? 0) + 1;
-			const drawing = await getSongFor(nextDay);
+			const drawing = await getSongFor();
 
 			console.log(drawing?.songId);
 			if (drawing) {

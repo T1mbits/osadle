@@ -47,8 +47,8 @@ export const api = {
 		aliases: async (id: string, add: string, remove: string) => {
 			await post(uri("admin/songs/aliases"), {
 				id,
-				add,
-				remove,
+				add: add.length > 1 ? [add] : [],
+				remove: remove.length > 1 ? [remove] : [],
 			});
 		},
 		list: async () => {

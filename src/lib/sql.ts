@@ -21,20 +21,22 @@ export const sql = {
 				.run();
 		},
 		get: async (db: D1Database, songId: string) => {
-			return <Song>(
-				await db
-					.prepare("SELECT * FROM songs WHERE songId = ?")
-					.bind(songId)
-					.first()
+			return sql.songs.parseDb(
+				<DbSong>(
+					await db
+						.prepare("SELECT * FROM songs WHERE songId = ?")
+						.bind(songId)
+						.first()
+				),
 			);
 		},
 		aliases: async (
 			db: D1Database,
 			songId: string,
-			add?: string,
-			remove?: string,
+			add?: string[],
+			remove?: string[],
 		) => {
-			const song: Song | null = await db
+			const song: DbSong | null = await db
 				.prepare("SELECT * FROM songs WHERE songId = ?")
 				.bind(songId)
 				.first();
@@ -44,12 +46,12 @@ export const sql = {
 			const aliases: string[] = JSON.parse(song.aliases);
 
 			if (add) {
-				aliases.push(add);
+				aliases.push(...add);
 			}
 
 			const updated = JSON.stringify(
 				aliases.filter((a) => {
-					return a !== remove;
+					return !remove?.includes(a);
 				}),
 			);
 
@@ -59,8 +61,19 @@ export const sql = {
 				.run();
 		},
 		list: async (db: D1Database) => {
-			return (<D1Result<Song>>await db.prepare("SELECT * FROM songs").run())
-				.results;
+			return (<D1Result<DbSong>>(
+				await db.prepare("SELECT * FROM songs").run()
+			)).results.map((a) => sql.songs.parseDb(a));
+		},
+
+		parseDb: (raw: DbSong): Song => {
+			return {
+				songId: raw.songId,
+				commonName: raw.commonName,
+				aliases: JSON.parse(raw.aliases),
+				audioHash: raw.audioHash,
+				imageHash: raw.imageHash,
+			};
 		},
 	},
 	history: {
@@ -73,11 +86,11 @@ export const sql = {
 		},
 		recent: async (db: D1Database) => {
 			return <History[] | null>(
-				(
+				(<D1Result<History>>(
 					await db
 						.prepare("SELECT * FROM history ORDER BY day DESC LIMIT 10")
 						.run()
-				).results
+				)).results
 			);
 		},
 		new: async (db: D1Database, day: number, time: number, songId: string) => {
@@ -89,10 +102,18 @@ export const sql = {
 	},
 };
 
-export type Song = {
+type DbSong = {
 	songId: string;
 	commonName: string;
 	aliases: string;
+	audioHash: string;
+	imageHash: string;
+};
+
+type Song = {
+	songId: string;
+	commonName: string;
+	aliases: string[];
 	audioHash: string;
 	imageHash: string;
 };

@@ -32,12 +32,14 @@ export function adminRoutes(app: RouterType) {
 		const audio = <File>form.get("audio");
 		const id = <string>form.get("id");
 		const name = <string>form.get("name");
+		console.log(id, name, image, audio);
+
 		if (!(id && name && audio && image)) {
 			return yourFault("no");
 		}
 
-		const imageHash = await upload("thumbnails", image);
-		const audioHash = await upload("music", audio);
+		const imageHash = await upload("thumbnails", image, "image/png");
+		const audioHash = await upload("music", audio, "audio/mpeg");
 
 		await sql.songs.upload(env.osadle, id, name, audioHash, imageHash);
 
@@ -55,12 +57,7 @@ export function adminRoutes(app: RouterType) {
 	app.post("/api/admin/songs/aliases", withAdmin, withJson, async (request) => {
 		const data = request.content;
 
-		await sql.songs.aliases(
-			env.osadle,
-			data.id,
-			data.add.length > 1 ? data.add : null,
-			data.remove.length > 1 ? data.remove : null,
-		);
+		await sql.songs.aliases(env.osadle, data.id, data.add, data.remove);
 
 		return response("ok");
 	});

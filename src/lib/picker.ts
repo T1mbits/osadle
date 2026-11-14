@@ -1,7 +1,7 @@
 import { type Song, sql } from "./sql.ts";
 import { env } from "cloudflare:workers";
 
-export async function getSongFor(day: number): Promise<Song | null> {
+export async function getSongFor(): Promise<Song | null> {
 	const bucket = await getPossibilitiesFor();
 	console.log(bucket.length);
 	if (bucket.length === 0) {

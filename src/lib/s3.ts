@@ -21,7 +21,11 @@ function createS3() {
 	});
 }
 
-export async function upload(bucket: string, file: File) {
+export async function upload(
+	bucket: string,
+	file: File,
+	assumeTypeIfNoMimeType: string,
+) {
 	const s3 = createS3();
 	const buffer = await file.arrayBuffer();
 
@@ -34,7 +38,7 @@ export async function upload(bucket: string, file: File) {
 			Bucket: bucket,
 			Key: hash,
 			Body: new Uint8Array(buffer),
-			ContentType: file.type,
+			ContentType: file.type.length > 1 ? file.type : assumeTypeIfNoMimeType,
 		}),
 	);
 
