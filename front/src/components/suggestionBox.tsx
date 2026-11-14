@@ -26,17 +26,19 @@ export function SuggestionBox({
     current: string;
     setTopSuggestion: Dispatch<SetStateAction<Song | undefined>>;
 }) {
-    if (current.length < 1) {
+    const query = current.toLowerCase();
+    if (query.length < 1) {
+        setTopSuggestion(undefined);
         return;
     }
     const inc = songs;
 
     const score = (x: string) => {
         let n = 0;
-        if (x.toLowerCase().includes(current)) {
+        if (x.toLowerCase().includes(query)) {
             n += 1;
         }
-        if (x.toLowerCase().startsWith(current)) {
+        if (x.toLowerCase().startsWith(query)) {
             n += 10;
         }
         return n;
@@ -55,29 +57,26 @@ export function SuggestionBox({
     inc.sort((a, b) => {
         return scoreSong(b) - scoreSong(a);
     });
-
-    setTopSuggestion(inc[0]);
+    const showing = inc.filter((a) => {
+        return scoreSong(a) > 0;
+    });
+    setTopSuggestion(showing[0]);
 
     return (
         <div className="suggestions">
-            {inc
-                .filter((a) => {
-                    return scoreSong(a) > 0;
-                })
-                .slice(0, 5)
-                .map((s) => {
-                    return (
-                        <Suggestion
-                            song={s}
-                            usedAlias={
-                                s.aliases.find((a) => {
-                                    return a.toLowerCase().includes(current);
-                                }) ?? s.name
-                            }
-                            key={s.id}
-                        />
-                    );
-                })}
+            {showing.slice(0, 5).map((s) => {
+                return (
+                    <Suggestion
+                        song={s}
+                        usedAlias={
+                            s.aliases.find((a) => {
+                                return a.toLowerCase().includes(query);
+                            }) ?? s.name
+                        }
+                        key={s.id}
+                    />
+                );
+            })}
         </div>
     );
 }

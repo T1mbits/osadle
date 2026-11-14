@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import findAudio from "../lib/audio";
 import "./song.css";
 import { type Song, useToday } from "../hooks/useToday";
@@ -6,6 +6,7 @@ import { setSave, useSave } from "../hooks/useSave";
 import { styleForImage } from "../lib/utils";
 import { SuggestionBox } from "../components/suggestionBox";
 import { Results } from "../components/results";
+import useHash from "../hooks/useHash";
 
 function GuessEntry({ song }: { song?: Song }) {
     return (
@@ -20,11 +21,29 @@ function GuessEntry({ song }: { song?: Song }) {
     );
 }
 
+export type Custom = {
+    answer: Song;
+    start: number;
+};
+
 const GUESS_INTERVALS = [0.5, 1, 2, 5, 7];
 
 // holy custom
-export default function GuessSong({ custom = false }: { custom?: boolean }) {
-    const today = useToday();
+export default function GuessSong({
+    day,
+    audioUrl,
+    startPercent,
+    options,
+    answerId,
+    custom,
+}: {
+    day: string;
+    audioUrl: string;
+    startPercent: number;
+    options: Song[];
+    answerId: string;
+    custom?: Dispatch<SetStateAction<Custom | undefined>>;
+}) {
     const state = useSave();
 
     const [start, setStart] = useState<number | undefined>();
@@ -37,49 +56,56 @@ export default function GuessSong({ custom = false }: { custom?: boolean }) {
     const [guesses, setGuesses] = useState<Song[]>(
         custom ? [] : (state.guesses ?? []),
     );
+    const inp = useRef<HTMLInputElement>(null);
+
+    const correct = guesses[guesses.length - 1]
+        ? btoa(guesses[guesses.length - 1].id) === answerId
+        : false;
+    const finished = guesses.length >= GUESS_INTERVALS.length || correct;
 
     const submit = () => {
-        if (!(first && today)) return;
+        if (!first) return;
         setTyped("");
         setGuesses([...guesses, first]);
 
         if (!custom) {
             state.guesses = guesses;
-            state.lastDay = today.day;
+            state.lastDay = Number(day);
             setSave(state);
         }
 
-        if (btoa(first.id) === today.answer) {
+        if (correct) {
             if (!custom) {
                 state.streak += 1;
+                state.streak = Math.min(state.streak, state.lastDay);
             }
-            return alert("you win btw");
+            return;
         }
-        if (guesses.length >= GUESS_INTERVALS.length - 1) {
+        if (finished) {
             if (!custom) {
                 state.streak = 0;
             }
-            return alert("you lost btw");
+        } else {
+            setSeconds(
+                GUESS_INTERVALS[
+                    Math.min(GUESS_INTERVALS.length - 1, guesses.length + 1)
+                ],
+            );
         }
-        setSeconds(GUESS_INTERVALS[guesses.length + 1]);
     };
 
     useEffect(() => {
-        if (!today) return;
-        console.log(today.audio);
-        findAudio(today.audio, today.start).then((d) => {
+        findAudio(audioUrl, startPercent).then((d) => {
             if (!d) return alert("error");
             setStart(d.start);
 
             setBuffer(d.buffer);
         });
-    }, [today]);
+    }, [audioUrl, startPercent]);
 
     return (
         <>
-            <h1>
-                osadle song #{custom ? "custom" : today ? today.day : "???"}
-            </h1>
+            <h1>osadle song #{custom ? "custom" : day}</h1>
             <div className="box">
                 <p>volume</p>
                 <input
@@ -95,8 +121,7 @@ export default function GuessSong({ custom = false }: { custom?: boolean }) {
                     type="button"
                     className={buffer ? "" : "loading"}
                     onClick={async () => {
-                        if (!(today && start && buffer))
-                            return alert("not loaded");
+                        if (!(start && buffer)) return alert("not loaded");
 
                         const source = context.createBufferSource();
                         source.buffer = buffer;
@@ -108,6 +133,7 @@ export default function GuessSong({ custom = false }: { custom?: boolean }) {
 
                         source.start(0, start);
                         source.stop(context.currentTime + seconds);
+                        inp.current?.focus();
                     }}
                 >
                     {buffer
@@ -117,19 +143,18 @@ export default function GuessSong({ custom = false }: { custom?: boolean }) {
                 <br />
                 <div className="guesses">
                     {GUESS_INTERVALS.map((v, i) => {
-                        return <GuessEntry key={v} song={guesses[i]} />;
+                        // biome-ignore lint/suspicious/noArrayIndexKey: i dont care
+                        return <GuessEntry key={i} song={guesses[i]} />;
                     })}
                 </div>
                 <br />
                 <p>Seconds: {seconds}</p>
                 <div className="inputBox">
-                    {today ? (
-                        <SuggestionBox
-                            songs={today.thumbnails}
-                            current={typed}
-                            setTopSuggestion={setFirst}
-                        />
-                    ) : undefined}
+                    <SuggestionBox
+                        songs={options}
+                        current={typed}
+                        setTopSuggestion={setFirst}
+                    />
                     <input
                         value={typed}
                         onChange={(ev) => {
@@ -140,30 +165,32 @@ export default function GuessSong({ custom = false }: { custom?: boolean }) {
                                 submit();
                             }
                         }}
-                        disabled={
-                            btoa(state.guesses.reverse()[0]?.id) ===
-                            today?.answer
-                        }
+                        disabled={finished}
+                        ref={inp}
                     />
-                    <button
-                        type="button"
-                        onClick={submit}
-                        disabled={
-                            btoa(state.guesses.reverse()[0]?.id) ===
-                            today?.answer
-                        }
-                    >
+                    <button type="button" onClick={submit} disabled={finished}>
                         submit
                     </button>
                 </div>
             </div>
-            {btoa(state.guesses.reverse()[0]?.id) === today?.answer ? (
+            {finished ? (
                 <Results
                     title={
-                        custom ? "custom osadle" : `osadle song #${today.day}`
+                        custom ? "custom osadle song" : `osadle song #${day}`
                     }
                     longest={seconds}
                     guessAmount={guesses.length}
+                    answer={options.find((a) => {
+                        return a.id === atob(answerId);
+                    })}
+                    correct={correct}
+                    custom={
+                        custom
+                            ? () => {
+                                  window.location.reload();
+                              }
+                            : undefined
+                    }
                 />
             ) : null}
         </>

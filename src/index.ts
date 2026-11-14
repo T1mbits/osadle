@@ -57,7 +57,7 @@ export default {
 					nextDay,
 					Math.ceil(Date.now()),
 					drawing?.songId,
-					Math.floor(Math.random() * 100),
+					Math.floor(Math.random() * 90),
 				);
 			}
 		}

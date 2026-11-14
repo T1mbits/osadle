@@ -14,7 +14,8 @@ export default function Landing() {
                     Guess Daily Song
                 </button>
             </div>
-            {/* <a href="#how">how to play?</a>*/}
+            <p>this website is WIP! things might change.</p>
+            <a href="https://guhw.dev/discord">suggest things in my discord!</a>
         </>
     );
 }

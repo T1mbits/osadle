@@ -7,6 +7,7 @@ export type Song = {
 	name: string;
 	aliases: string[];
 	image: string;
+	audio?: string;
 };
 
 export type Today = {

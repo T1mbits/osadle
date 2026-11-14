@@ -15,6 +15,10 @@ export function routes(app: RouterType) {
 			"/storage/v1/object/public/thumbnails/",
 			env.S3_ENDPOINT,
 		);
+		const audioBase = new URL(
+			"/storage/v1/object/public/music/",
+			env.S3_ENDPOINT,
+		);
 
 		return response({
 			_: "you know what you're doing, don't you? don't do it !!",
@@ -22,7 +26,7 @@ export function routes(app: RouterType) {
 			time: last.time,
 			answer: btoa(last.songId),
 
-			audio: await sign("music", song.audioHash, 360),
+			audio: new URL(song.audioHash, audioBase),
 			start: last.startPercent,
 
 			thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
@@ -31,6 +35,7 @@ export function routes(app: RouterType) {
 					name: a.commonName,
 					aliases: a.aliases,
 					image: new URL(a.imageHash, imgBase),
+					audio: new URL(a.audioHash, audioBase),
 				};
 			}),
 		});
