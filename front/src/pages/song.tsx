@@ -65,14 +65,14 @@ export default function GuessSong({
 
     const submit = () => {
         if (!first) return;
-        setTyped("");
-        setGuesses([...guesses, first]);
 
         if (!custom) {
-            state.guesses = guesses;
+            state.guesses = [...guesses, first];
             state.lastDay = Number(day);
             setSave(state);
         }
+        setTyped("");
+        setGuesses([...guesses, first]);
 
         if (correct) {
             if (!custom) {
