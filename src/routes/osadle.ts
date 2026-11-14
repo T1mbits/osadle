@@ -23,6 +23,7 @@ export function routes(app: RouterType) {
 			answer: btoa(last.songId),
 
 			audio: await sign("music", song.audioHash, 360),
+			start: last.startPercent,
 
 			thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
 				return {

@@ -93,10 +93,18 @@ export const sql = {
 				)).results
 			);
 		},
-		new: async (db: D1Database, day: number, time: number, songId: string) => {
+		new: async (
+			db: D1Database,
+			day: number,
+			time: number,
+			songId: string,
+			startPercent: number,
+		) => {
 			return await db
-				.prepare("INSERT INTO history (day, time, songId) VALUES (?,?,?)")
-				.bind(day, time, songId)
+				.prepare(
+					"INSERT INTO history (day, time, songId, startPercent) VALUES (?,?,?,?)",
+				)
+				.bind(day, time, songId, startPercent)
 				.run();
 		},
 	},
@@ -110,7 +118,7 @@ type DbSong = {
 	imageHash: string;
 };
 
-type Song = {
+export type Song = {
 	songId: string;
 	commonName: string;
 	aliases: string[];
@@ -122,4 +130,5 @@ export type History = {
 	day: number;
 	time: number;
 	songId: string;
+	startPercent: number;
 };

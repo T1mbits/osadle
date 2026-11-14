@@ -55,4 +55,7 @@ export const api = {
 			return await get(uri("admin/songs/list"));
 		},
 	},
+	today: async () => {
+		return (await get(uri("today"))).content;
+	},
 };
