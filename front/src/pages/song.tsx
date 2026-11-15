@@ -66,6 +66,8 @@ export default function GuessSong({
     if (state.lastDay !== Number(day)) {
         state.guesses = [];
         state.lastDay = Number(day);
+        setSave(state);
+        window.location.reload();
     }
 
     const submit = () => {
