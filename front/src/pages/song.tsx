@@ -67,6 +67,9 @@ export default function GuessSong({
         if (!first) return;
 
         if (!custom) {
+            if (state.lastDay !== Number(day)) {
+                state.guesses = [];
+            }
             state.guesses = [...guesses, first];
             state.lastDay = Number(day);
             setSave(state);
