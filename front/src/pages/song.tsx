@@ -63,7 +63,7 @@ export default function GuessSong({
         : false;
     const finished = guesses.length >= GUESS_INTERVALS.length || correct;
 
-    if (state.lastDay !== Number(day)) {
+    if (!custom && state.lastDay !== Number(day)) {
         state.guesses = [];
         state.lastDay = Number(day);
         setSave(state);
