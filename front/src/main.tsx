@@ -19,18 +19,6 @@ export default function Main() {
     );
 
     useEffect(() => {
-        document.body.id = dark ? "dark" : "light";
-        if (today) {
-            setCustom({
-                start: Math.floor(Math.random() * 90),
-                answer: today.thumbnails[
-                    Math.floor(Math.random() * today.thumbnails.length)
-                ],
-            });
-        }
-    }, [dark, today]);
-
-    useEffect(() => {
         window.addEventListener("resize", () => {
             setMobile(document.body.clientWidth < document.body.clientHeight);
         });
@@ -38,8 +26,9 @@ export default function Main() {
     document.body.classList.toggle("mobileUi", isMobile);
 
     const map = [
-        { hashes: ["", "#home"], element: <Landing /> },
+        { name: "home", hashes: ["", "#home"], element: <Landing /> },
         {
+            name: "song",
             hashes: ["#song"],
             element: (
                 <>
@@ -58,6 +47,7 @@ export default function Main() {
             ),
         },
         {
+            name: "song-custom",
             hashes: ["#song-custom", "#song-custom-redo"],
             element: (
                 <>
@@ -78,10 +68,15 @@ export default function Main() {
             ),
         },
     ];
+    const page = map.find((a) => a.hashes.includes(hash));
+    const shown = page ?? {
+        name: "error",
+        hashes: [],
+        element: <ErrorPage />,
+    };
+    console.log(hash, shown.name, shown.hashes);
 
-    return (
-        <>
-            {map.find((a) => a.hashes.includes(hash))?.element ?? <ErrorPage />}
-        </>
-    );
+    document.body.id = shown.name;
+
+    return <>{shown.element}</>;
 }

@@ -58,12 +58,22 @@ h1 {
 }
 
 body,
-#root {
+#root,
+.bg {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5px;
+}
+
+.bg {
+    position: absolute;
+    z-index: -15;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
 }
 
 body {
