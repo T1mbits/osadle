@@ -2,20 +2,59 @@
     font-family: "LunchType21";
     src: url("/fonts/Lunchtype21-Medium.ttf");
 }
+@font-face {
+    font-family: "Kumosan";
+    src: url("/fonts/kumosan.ttf");
+}
+
+html,
+body,
+#root {
+    overflow: hidden;
+    height: 100%;
+}
+
+@media (max-height: 800px) {
+    html {
+        zoom: 0.75;
+    }
+}
+@media (max-width: 500px) or (max-height: 600px) {
+    html {
+        zoom: 0.5;
+    }
+}
+
+@media (max-height: 300px) or (max-width: 200px) {
+    html {
+        height: 0;
+    }
+    html::after {
+        content: "your screen is too small wtf";
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        font-size: 50px;
+        color: white;
+    }
+}
 
 body {
     --bg: #b2b2b2;
     --text: white;
-}
-body#dark {
-    --bg: #626262;
-    --text: white;
+    font-size: 24px;
 }
 
 :root,
 button,
 input {
     font-family: "LunchType21", monospace;
+}
+h1 {
+    font-family: "Kumosan", monospace;
+    margin: 0;
+    transform: translateY(-30%);
 }
 
 body,
@@ -30,90 +69,70 @@ body,
 body {
     background-color: var(--bg);
     color: var(--text);
-    height: 100vh;
+    height: 100%;
     margin: 0;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 a {
     text-align: center;
     color: var(--text);
     text-decoration: none;
-    font-size: 30px;
 }
 a:hover {
     text-decoration: underline;
 }
-
-#watermark {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    font-size: 13px;
-    a {
-        text-decoration: underline;
-        font-size: 13px; /* ts is stupid */
-    }
-}
-
-h1,
-p {
-    margin: 0;
-}
-
-br {
-    margin: 15px;
-}
-
-button {
-    border-image: url("/images/slices/button.png") round;
-    border-image-slice: 60 fill;
-    border-width: 40px;
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: transparent;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-input {
-    border-image: url("/images/slices/input.png") round;
-    border-image-slice: 40 fill;
-    border-width: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: transparent;
-    font-size: 20px;
-    outline: none;
-}
-
-.textButton {
-    background-color: transparent;
-    border: none;
-    color: var(--text);
-    padding: 0;
-}
-.textButton:hover {
-    text-decoration: underline;
-}
-
-#toggle-dark {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-}
-
 .box {
-    background-color: white;
-    padding: 15px;
-    padding-left: 30px;
-    padding-right: 30px;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--bg);
+    border: 40px solid transparent;
+    border-image-outset: 15px;
+    border-image-source: url("/images/slices/boxed.png");
+    border-image-slice: 40 40 40 40;
+    border-image-repeat: stretch;
 }
-#dark .box {
-    background-color: #b2b2b2;
-    color: white;
+
+.cloud1,
+.cloud2 {
+    width: 300px;
+    height: 150px;
+}
+
+.cloud1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-65%, -75%);
+    background-image: url("/images/clouds/1.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+.cloud2 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transform: translate(65%, 75%);
+    background-image: url("/images/clouds/2.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+.mobileUi .cloud1,
+.mobileUi .cloud2 {
+    width: 200px;
+    height: 100px;
+}
+
+.disabled {
+    opacity: 0.5;
 }

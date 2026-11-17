@@ -14,6 +14,9 @@ export default function Main() {
     const hash = useHash();
     const today = useToday();
     const [custom, setCustom] = useState<Custom | undefined>();
+    const [isMobile, setMobile] = useState(
+        document.body.clientWidth < document.body.clientHeight,
+    );
 
     useEffect(() => {
         document.body.id = dark ? "dark" : "light";
@@ -26,6 +29,13 @@ export default function Main() {
             });
         }
     }, [dark, today]);
+
+    useEffect(() => {
+        window.addEventListener("resize", () => {
+            setMobile(document.body.clientWidth < document.body.clientHeight);
+        });
+    }, []);
+    document.body.classList.toggle("mobileUi", isMobile);
 
     const map = [
         { hashes: ["", "#home"], element: <Landing /> },
@@ -72,7 +82,6 @@ export default function Main() {
     return (
         <>
             {map.find((a) => a.hashes.includes(hash))?.element ?? <ErrorPage />}
-            <BottomThings />
         </>
     );
 }
