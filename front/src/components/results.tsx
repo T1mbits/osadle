@@ -43,7 +43,7 @@ export function Results({
                             type="button"
                             onClick={() => {
                                 navigator.clipboard.writeText(
-                                    `**${title}**: ${"⬛".repeat(attempts - 1)}${isCorrect ? "🩶" : "💥"} (${isCorrect ? attempts : "X"}/5)${extraCopy ? `\n${extraCopy}` : ""}\n> https://osadle.guhw.dev/`,
+                                    `**${title}**: ${"⬛".repeat(attempts - 1)}${isCorrect ? "🩶" : "💥"} (${isCorrect ? attempts : "X"}/5)${extraCopy ? `\n${extraCopy}` : ""}\n> #osadle https://osadle.guhw.dev/`,
                                 );
                                 alert("copied");
                             }}
