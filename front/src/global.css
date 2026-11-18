@@ -1,148 +1,148 @@
 @font-face {
-    font-family: "LunchType21";
-    src: url("/fonts/Lunchtype21-Medium.ttf");
+	font-family: "LunchType21";
+	src: url("/fonts/Lunchtype21-Medium.ttf");
 }
 @font-face {
-    font-family: "Kumosan";
-    src: url("/fonts/kumosan.ttf");
+	font-family: "Kumosan";
+	src: url("/fonts/kumosan.ttf");
 }
 
 html,
 body,
 #root {
-    overflow: hidden;
-    height: 100%;
+	overflow: hidden;
+	height: 100%;
 }
 
 @media (max-height: 800px) {
-    html {
-        zoom: 0.75;
-    }
+	html {
+		zoom: 0.75;
+	}
 }
 @media (max-width: 500px) or (max-height: 600px) {
-    html {
-        zoom: 0.5;
-    }
+	html {
+		zoom: 0.5;
+	}
 }
 
 @media (max-height: 300px) or (max-width: 200px) {
-    html {
-        height: 0;
-    }
-    html::after {
-        content: "your screen is too small wtf";
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        position: absolute;
-        font-size: 50px;
-        color: white;
-    }
+	html {
+		height: 0;
+	}
+	html::after {
+		content: "your screen is too small wtf";
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		position: absolute;
+		font-size: 50px;
+		color: white;
+	}
 }
 
 body {
-    --bg: #b2b2b2;
-    --text: white;
-    font-size: 24px;
+	--bg: #b2b2b2;
+	--text: white;
+	font-size: 24px;
 }
 
 :root,
 button,
 input {
-    font-family: "LunchType21", monospace;
+	font-family: "LunchType21", monospace;
 }
 h1 {
-    font-family: "Kumosan", monospace;
-    margin: 0;
-    transform: translateY(-30%);
+	font-family: "Kumosan", monospace;
+	margin: 0;
+	transform: translateY(-30%);
 }
 
 body,
 #root,
 .bg {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
 }
 
 .bg {
-    position: absolute;
-    z-index: -15;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+	position: absolute;
+	z-index: -15;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
-    height: 100%;
-    margin: 0;
+	background-color: var(--bg);
+	color: var(--text);
+	height: 100%;
+	margin: 0;
 }
 
 button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	cursor: pointer;
 }
 
 a {
-    text-align: center;
-    color: var(--text);
-    text-decoration: none;
+	text-align: center;
+	color: var(--text);
+	text-decoration: none;
 }
 a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 .box {
-    background-color: var(--bg);
-    border: 40px solid transparent;
-    border-image-outset: 15px;
-    border-image-source: url("/images/slices/boxed.png");
-    border-image-slice: 40 40 40 40;
-    border-image-repeat: stretch;
+	background-color: var(--bg);
+	border: 40px solid transparent;
+	border-image-outset: 15px;
+	border-image-source: url("/images/slices/boxed.png");
+	border-image-slice: 40 40 40 40;
+	border-image-repeat: stretch;
 }
 
 .cloud1,
 .cloud2 {
-    width: 300px;
-    height: 150px;
+	width: 300px;
+	height: 150px;
 }
 
 .cloud1 {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translate(-65%, -75%);
-    background-image: url("/images/clouds/1.png");
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    pointer-events: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform: translate(-65%, -75%);
+	background-image: url("/images/clouds/1.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	pointer-events: none;
 }
 
 .cloud2 {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    transform: translate(65%, 75%);
-    background-image: url("/images/clouds/2.png");
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    pointer-events: none;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	transform: translate(65%, 75%);
+	background-image: url("/images/clouds/2.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	pointer-events: none;
 }
 
 .mobileUi .cloud1,
 .mobileUi .cloud2 {
-    width: 200px;
-    height: 100px;
+	width: 200px;
+	height: 100px;
 }
 
 .disabled {
-    opacity: 0.5;
+	opacity: 0.5;
 }

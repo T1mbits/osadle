@@ -1,24 +1,24 @@
 :root {
-    color: white;
-    font-family: monospace;
+	color: white;
+	font-family: monospace;
 }
 
 .part,
 .fields {
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    border: 1px solid white;
-    margin-bottom: 5px;
+	display: flex;
+	flex-direction: column;
+	padding: 15px;
+	border: 1px solid white;
+	margin-bottom: 5px;
 }
 
 .part.processing {
-    opacity: 0.5;
-    pointer-events: none;
+	opacity: 0.5;
+	pointer-events: none;
 }
 
 .fields {
-    flex-direction: row;
-    gap: 15px;
-    flex-wrap: wrap;
+	flex-direction: row;
+	gap: 15px;
+	flex-wrap: wrap;
 }

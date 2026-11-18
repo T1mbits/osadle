@@ -5,8 +5,8 @@ import Main from "../main";
 
 const root = document.getElementById("root");
 if (root)
-    ReactDom.createRoot(root).render(
-        <React.StrictMode>
-            <Main />
-        </React.StrictMode>,
-    );
+	ReactDom.createRoot(root).render(
+		<React.StrictMode>
+			<Main />
+		</React.StrictMode>,
+	);

@@ -3,9 +3,9 @@ import "./global.css";
 import { useEffect, useState } from "react";
 
 import useHash from "./hooks/useHash";
+import { useToday } from "./hooks/useToday";
 import ErrorPage from "./pages/error";
 import GuessSong from "./pages/song";
-import { useToday } from "./hooks/useToday";
 
 export default function Main() {
     const hash = useHash();
@@ -43,7 +43,6 @@ export default function Main() {
         hashes: [],
         element: <ErrorPage />,
     };
-    console.log(hash, shown.name, shown.hashes);
 
     document.body.id = shown.name;
 

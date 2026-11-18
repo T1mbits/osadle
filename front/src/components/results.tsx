@@ -1,68 +1,66 @@
-import { Song } from "../hooks/useToday";
-import { styleForImage } from "../lib/utils";
+import type { JSX } from "react/jsx-runtime";
 import "./results.css";
 
 export function Results({
-    answer,
-    title,
-    guessAmount,
-    longest,
-    correct,
-    custom,
+	title,
+	correctAnswer,
+	attempts,
+	maxAttempts: max,
+	copyable,
+	isCorrect,
+	extraCopy = "",
+	keepPlayingCallback,
+	children,
 }: {
-    answer?: Song;
-    title: string;
-    guessAmount: number;
-    longest: number;
-    correct: boolean;
-    custom?: () => void;
+	title: string;
+	correctAnswer: string;
+	attempts: number;
+	maxAttempts?: number;
+	isCorrect: boolean;
+
+	copyable: boolean;
+	extraCopy?: string;
+	keepPlayingCallback?: () => void;
+	children?: JSX.Element[];
 }) {
-    return (
-        <div className="darken">
-            <div className="results">
-                <span className="thumb" style={styleForImage(answer?.image)} />
-                <p>answer: {answer?.name ?? "well idk"}</p>
-                <h1>{title}</h1>
-                <p>
-                    {correct
-                        ? `guessed in ${guessAmount} tries, using ${longest}sec of the song!`
-                        : `failed guessing up to ${longest}sec. holy larps`}
-                </p>
-                <button
-                    type="button"
-                    onClick={() => {
-                        window.location.hash = "#";
-                    }}
-                >
-                    back
-                </button>
-                {custom ? (
-                    <button
-                        type="button"
-                        onClick={() => {
-                            custom();
-                        }}
-                    >
-                        again
-                    </button>
-                ) : (
-                    <>
-                        <button
-                            type="button"
-                            className="textButton"
-                            onClick={() => {
-                                navigator.clipboard.writeText(
-                                    `**${title}**: ${"⬛".repeat(guessAmount - 1)}${correct ? "🩶" : "💥"} (${correct ? guessAmount : "X"}/5) \n> https://osadle.guhw.dev/`,
-                                );
-                                alert("copied");
-                            }}
-                        >
-                            copy text (for discord)
-                        </button>
-                        <a href="#song-custom">keep playing?</a>
-                    </>
-                )}
-            </div>
-        </div>
-    );
+	return (
+		<div className="darken">
+			<div className="results">
+				<span className="cloud1" />
+				<span className="cloud2" />
+				<h1 id="resultsTitle">{title}</h1>
+				<span>
+					Answer: <span className="spoiler">{correctAnswer}</span>
+				</span>
+				<span>
+					Attempts: {isCorrect ? attempts : "X"}
+					{max ? `/${max}` : ""}
+				</span>
+				{children}
+				<div id="resultsButtons">
+					{copyable ? (
+						<button
+							type="button"
+							onClick={() => {
+								navigator.clipboard.writeText(
+									`**${title}**: ${"⬛".repeat(attempts - 1)}${isCorrect ? "🩶" : "💥"} (${isCorrect ? attempts : "X"}/5)${extraCopy ? `\n${extraCopy}` : ""}\n> https://osadle.guhw.dev/`,
+								);
+								alert("copied");
+							}}
+						>
+							copy as text
+						</button>
+					) : (
+						""
+					)}
+					{keepPlayingCallback ? (
+						<button type="button" onClick={keepPlayingCallback}>
+							keep playing?
+						</button>
+					) : null}
+					<a href="#home">other modes</a>
+				</div>
+			</div>
+		</div>
+	);
 }

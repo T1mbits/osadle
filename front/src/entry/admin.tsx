@@ -5,8 +5,8 @@ import Admin from "../admin";
 
 const root = document.getElementById("root");
 if (root)
-    ReactDom.createRoot(root).render(
-        <React.StrictMode>
-            <Admin />
-        </React.StrictMode>,
-    );
+	ReactDom.createRoot(root).render(
+		<React.StrictMode>
+			<Admin />
+		</React.StrictMode>,
+	);
