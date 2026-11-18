@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
+import Credits from "./pages/credits";
 import ErrorPage from "./pages/error";
 import GuessSong from "./pages/song";
-import Credits from "./pages/credits";
 
 export default function Main() {
     const hash = useHash();

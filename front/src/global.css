@@ -146,3 +146,13 @@ a:hover {
 .disabled {
     opacity: 0.5;
 }
+
+.spoiler {
+    color: transparent;
+    background-color: black;
+}
+
+.spoiler:hover {
+    color: unset;
+    background-color: unset;
+}
