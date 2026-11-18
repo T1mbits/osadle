@@ -1,0 +1,72 @@
+#credits {
+    .bg {
+        display: flex;
+    }
+
+    #osage {
+        flex: 1;
+        width: 100%;
+        height: auto;
+        background-image: url("/images/thing.png");
+        background-position: top right;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        overflow-y: scroll;
+    }
+
+    #logo {
+        width: 100%;
+        height: 100px;
+        background-image: url("/images/osadle.png");
+        background-position: top center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    h2 {
+        margin: 0;
+    }
+
+    .card {
+        margin: 5px;
+        display: flex;
+        height: 150px;
+        padding: 15px;
+        gap: 25px;
+        border: 1px solid black;
+        background-color: var(--bg);
+    }
+
+    .personIcon {
+        width: 150px;
+        background-size: cover;
+        background-position: center;
+    }
+    .right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .name {
+        font-size: 30px;
+    }
+    .contribution {
+        font-size: 25px;
+    }
+
+    .socials {
+        margin-top: auto;
+        display: flex;
+    }
+    .socials button {
+        color: white;
+        text-decoration: underline;
+        font-size: 20px;
+    }
+}

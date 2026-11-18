@@ -6,6 +6,7 @@ import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
 import ErrorPage from "./pages/error";
 import GuessSong from "./pages/song";
+import Credits from "./pages/credits";
 
 export default function Main() {
     const hash = useHash();
@@ -23,6 +24,7 @@ export default function Main() {
 
     const map = [
         { name: "home", hashes: ["", "#home"], element: <Landing /> },
+        { name: "credits", hashes: ["#credits"], element: <Credits /> },
         {
             name: "song",
             hashes: ["#song"],
