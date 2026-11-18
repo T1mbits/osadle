@@ -1,194 +1,194 @@
 /* holy loop spinner */
 @keyframes spinner {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(-360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 #song {
-	#osageLeft,
-	#osageRight {
-		position: absolute;
-		width: 50%;
-		height: 100%;
-	}
+    #osageLeft,
+    #osageRight {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+    }
 
-	#osageLeft {
-		left: 0;
-		bottom: 0;
-		background-image: url("/images/yoyuyoku/left.png");
-		background-position: bottom left;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
+    #osageLeft {
+        left: 0;
+        bottom: 0;
+        background-image: url("/images/yoyuyoku/left.png");
+        background-position: bottom left;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 
-	#osageRight {
-		right: 0;
-		top: 0;
-		background-image: url("/images/watashiwaame.png");
-		background-position: bottom right;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
+    #osageRight {
+        right: 0;
+        top: 0;
+        background-image: url("/images/watashiwaame.png");
+        background-position: bottom right;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 
-	h1 {
-		margin-top: 35px;
-	}
-	.mobileUi h1 {
-		font-size: 30px;
-	}
-	#content {
-		display: flex;
-		flex: 1;
-		min-width: 45vw;
-	}
+    h1 {
+        margin-top: 35px;
+    }
+    .mobileUi h1 {
+        font-size: 30px;
+    }
+    #content {
+        display: flex;
+        flex: 1;
+        min-width: 45vw;
+    }
 
-	#big-card {
-		display: flex;
-		flex-direction: column;
-		height: auto;
-		flex: 1;
-		margin: 35px;
-		margin-top: 0;
-		background-color: var(--bg);
-		border: 40px solid transparent;
-		border-image-outset: 15px;
-		border-image-source: url("/images/slices/boxed.png");
-		border-image-slice: 40 40 40 40;
-		border-image-repeat: stretch;
-		gap: 10px;
-	}
+    #big-card {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        flex: 1;
+        margin: 35px;
+        margin-top: 0;
+        background-color: var(--bg);
+        border: 40px solid transparent;
+        border-image-outset: 15px;
+        border-image-source: url("/images/slices/boxed.png");
+        border-image-slice: 40 40 40 40;
+        border-image-repeat: stretch;
+        gap: 10px;
+    }
 
-	#top {
-		display: flex;
-		height: 150px;
-	}
+    #top {
+        display: flex;
+        height: 150px;
+    }
 
-	#disc {
-		width: 150px;
-		background-image: url("/images/disc.png");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-	#stats {
-		justify-content: center;
-		flex: 1;
-		color: black;
-		display: flex;
-		flex-direction: column;
-		text-align: center;
-		font-size: 25px;
-		margin: 15px;
-	}
-	#play {
-		width: 200px;
-		border: 30px solid transparent;
-		border-image-source: url("/images/slices/button.png");
-		border-image-slice: 30 30 30 30;
-		border-image-repeat: stretch;
-		background-image: url("/images/play.png");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-	#play.playing {
-		background-image: url("/images/pause.png");
-	}
+    #disc {
+        width: 150px;
+        background-image: url("/images/disc.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    #stats {
+        justify-content: center;
+        flex: 1;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 25px;
+        margin: 15px;
+    }
+    #play {
+        width: 200px;
+        border: 30px solid transparent;
+        border-image-source: url("/images/slices/button.png");
+        border-image-slice: 30 30 30 30;
+        border-image-repeat: stretch;
+        background-image: url("/images/play.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    #play.playing {
+        background-image: url("/images/pause.png");
+    }
 
-	#bottom {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
+    #bottom {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
-	.card {
-		display: flex;
-		border: 15px solid transparent;
-		border-image-source: url("/images/slices/input.png");
-		border-image-slice: 15 15 15 15;
-		border-image-repeat: stretch;
-		flex: 1;
-		position: relative;
-	}
-	.thumb {
-		aspect-ratio: 1.5;
-		background-image: url("/images/disc.png");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-		mask-image: url("/images/guesses/mask.png");
-		mask-position: center;
-		mask-repeat: no-repeat;
-		mask-size: contain;
-		position: relative;
-	}
+    .card {
+        display: flex;
+        border: 15px solid transparent;
+        border-image-source: url("/images/slices/input.png");
+        border-image-slice: 15 15 15 15;
+        border-image-repeat: stretch;
+        flex: 1;
+        position: relative;
+    }
+    .thumb {
+        aspect-ratio: 1.5;
+        background-image: url("/images/disc.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        mask-image: url("/images/guesses/mask.png");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        position: relative;
+    }
 
-	.mobileUi .thumb {
-		aspect-ratio: unset;
-		width: 100px;
-		margin-right: 15px;
-	}
-	.thumb::after {
-		position: absolute;
-		content: "";
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-image: url("/images/guesses/outline.png");
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
+    .mobileUi .thumb {
+        aspect-ratio: unset;
+        width: 100px;
+        margin-right: 15px;
+    }
+    .thumb::after {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/images/guesses/outline.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 
-	.vert {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex: 1;
-	}
+    .vert {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+    }
 
-	.songTitle {
-		font-size: 40px;
-		margin-top: auto;
-	}
-	.time {
-		opacity: 0.5;
-		color: black;
-		margin-top: auto;
-	}
+    .songTitle {
+        font-size: 40px;
+        margin-top: auto;
+    }
+    .time {
+        opacity: 0.5;
+        color: black;
+        margin-top: auto;
+    }
 
-	#guessBox {
-		flex: 1;
-		display: flex;
-	}
+    #guessBox {
+        flex: 1;
+        display: flex;
+    }
 
-	#guessBox input {
-		border: 15px solid transparent;
-		border-image-source: url("/images/slices/input.png");
-		border-image-slice: 20 20 20 20;
-		border-image-repeat: fill;
-		background-color: #b2b2b2;
-		height: auto;
-		flex: 3;
-		max-height: 50px;
-		outline: none;
-		min-width: 0;
-		font-size: 20px;
-	}
-	#guessBox #guess {
-		border: 20px solid transparent;
-		border-image-source: url("/images/slices/button.png");
-		border-image-slice: 30 30 30 30;
-		border-image-repeat: fill;
-		max-height: 82px;
-		flex: 1;
-		font-size: 20px;
-	}
-	.spinning {
-		animation: 4s infinite spinner linear;
-	}
+    #guessBox input {
+        border: 15px solid transparent;
+        border-image-source: url("/images/slices/input.png");
+        border-image-slice: 20 20 20 20;
+        border-image-repeat: fill;
+        background-color: #b2b2b2;
+        height: auto;
+        flex: 3;
+        max-height: 50px;
+        outline: none;
+        min-width: 0;
+        font-size: 20px;
+    }
+    #guessBox #guess {
+        border: 20px solid transparent;
+        border-image-source: url("/images/slices/button.png");
+        border-image-slice: 30 30 30 30;
+        border-image-repeat: fill;
+        max-height: 82px;
+        flex: 1;
+        font-size: 20px;
+    }
+    .spinning {
+        animation: 4s infinite spinner linear;
+    }
 }

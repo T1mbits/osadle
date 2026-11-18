@@ -1,31 +1,31 @@
 #error {
-	#root {
-		display: flex;
-		justify-content: start;
-		align-items: end;
-		width: 100%;
-	}
+    #root {
+        display: flex;
+        justify-content: start;
+        align-items: end;
+        width: 100%;
+    }
 
-	.bg {
-		display: flex;
-	}
+    .bg {
+        display: flex;
+    }
 
-	#osage {
-		flex: 1;
-		width: 100%;
-		height: auto;
-		background-image: url("/images/tokoshizume.png");
-		background-position: top left;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
+    #osage {
+        flex: 1;
+        width: 100%;
+        height: auto;
+        background-image: url("/images/tokoshizume.png");
+        background-position: top left;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 
-	#msg {
-		margin-right: 30vw;
-		margin-top: 20vh;
-		text-align: end;
-		background-color: #b2b2b2a0;
-		border-radius: 15px;
-		padding: 20px;
-	}
+    #msg {
+        margin-right: 30vw;
+        margin-top: 20vh;
+        text-align: end;
+        background-color: #b2b2b2a0;
+        border-radius: 15px;
+        padding: 20px;
+    }
 }

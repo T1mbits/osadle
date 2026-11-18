@@ -1,61 +1,61 @@
 const BASE_API = "/api/";
 
 function uri(endpoint: string) {
-	return new URL(`${BASE_API}${endpoint}`, location.toString()).toString();
+    return new URL(`${BASE_API}${endpoint}`, location.toString()).toString();
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: json
 async function post(endpoint: string, body: any) {
-	const req = await fetch(endpoint, {
-		method: "POST",
-		body: JSON.stringify(body),
-	});
+    const req = await fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify(body),
+    });
 
-	if (!req.ok) alert(await req.text());
+    if (!req.ok) alert(await req.text());
 
-	return req.json();
+    return req.json();
 }
 
 async function get(endpoint: string) {
-	const req = await fetch(endpoint);
+    const req = await fetch(endpoint);
 
-	if (!req.ok) alert(await req.text());
+    if (!req.ok) alert(await req.text());
 
-	return req.json();
+    return req.json();
 }
 
 export const api = {
-	songs: {
-		upload: async (id: string, name: string, thumb: File, audio: File) => {
-			const form = new FormData();
-			form.append("id", id);
-			form.append("name", name);
-			form.append("thumb", thumb);
-			form.append("audio", audio);
+    songs: {
+        upload: async (id: string, name: string, thumb: File, audio: File) => {
+            const form = new FormData();
+            form.append("id", id);
+            form.append("name", name);
+            form.append("thumb", thumb);
+            form.append("audio", audio);
 
-			const req = await fetch(uri("admin/songs/upload"), {
-				method: "POST",
-				body: form,
-			});
-			if (!req.ok) alert(await req.text());
-		},
-		delete: async (id: string) => {
-			await post(uri("admin/songs/delete"), {
-				id,
-			});
-		},
-		aliases: async (id: string, add: string, remove: string) => {
-			await post(uri("admin/songs/aliases"), {
-				id,
-				add: add.length > 1 ? [add] : [],
-				remove: remove.length > 1 ? [remove] : [],
-			});
-		},
-		list: async () => {
-			return await get(uri("admin/songs/list"));
-		},
-	},
-	today: async () => {
-		return (await get(uri("today"))).content;
-	},
+            const req = await fetch(uri("admin/songs/upload"), {
+                method: "POST",
+                body: form,
+            });
+            if (!req.ok) alert(await req.text());
+        },
+        delete: async (id: string) => {
+            await post(uri("admin/songs/delete"), {
+                id,
+            });
+        },
+        aliases: async (id: string, add: string, remove: string) => {
+            await post(uri("admin/songs/aliases"), {
+                id,
+                add: add.length > 1 ? [add] : [],
+                remove: remove.length > 1 ? [remove] : [],
+            });
+        },
+        list: async () => {
+            return await get(uri("admin/songs/list"));
+        },
+    },
+    today: async () => {
+        return (await get(uri("today"))).content;
+    },
 };
