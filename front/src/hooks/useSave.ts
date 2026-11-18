@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
-
-import { api } from "../lib/api";
+import { useState } from "react";
 
 export type Save = {
     lastDay: number;
-    streak: number;
     games: Map<string, GenericGame>;
 };
 
 export type GenericGame = {
     guesses: [];
+    streak?: number;
     startTime?: number;
 };
 
@@ -17,7 +15,6 @@ function get(): Save {
     const raw = JSON.parse(localStorage.getItem("osadle") ?? "{}");
     return {
         lastDay: raw.lastDay ?? 0,
-        streak: raw.streak ?? 0,
         games: new Map(Object.entries(raw.games)),
     };
 }
@@ -27,9 +24,11 @@ export function useSave(day?: number) {
 
     if (day && save.lastDay !== day) {
         save.lastDay = day;
-        save.games.forEach((v) => {
+        save.games.forEach((v, idx) => {
             v.guesses = [];
             v.startTime = undefined;
+
+            save.games.set(idx, v); // i don't think you need to do this but just in case
         });
     }
 
@@ -44,6 +43,7 @@ export function useGame(game: string, day?: number) {
         game,
         save.games.get(game) ?? {
             guesses: [],
+            streak: 0,
             startTime: undefined,
         },
     );

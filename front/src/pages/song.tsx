@@ -3,7 +3,6 @@ import {
     type JSX,
     type RefObject,
     useEffect,
-    useRef,
     useState,
 } from "react";
 
