@@ -1,144 +1,146 @@
-#home #root {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
-
-#top {
-    width: 100%;
-    flex: 2.5;
-    display: flex;
-    justify-content: end;
-}
-
-#title {
-    flex: 1;
-    min-height: 160px;
-    margin: 50px;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-}
-#logo {
-    background-image: url("/images/osadle.png");
-    background-position: bottom right;
-    background-size: contain;
-    background-repeat: no-repeat;
-    flex: 7;
-    width: auto;
-}
-#subtitle {
-    text-align: right;
-    width: auto;
-    margin-right: 15px;
-    font-size: 40px;
-}
-.mobileUi #subtitle {
-    font-size: 30px;
-}
-#wip {
-    height: auto;
-    aspect-ratio: 1;
-    margin: 70px;
-    margin-right: 0px;
-    background-image: url("/images/wip.png");
-    background-position: bottom right;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.mobileUi #wip {
-    display: none;
-}
-
-#bottom {
-    width: 100%;
-    flex: 5;
-    display: flex;
-}
-
-#left {
-    height: auto;
-    flex: 4;
-    display: flex;
-    flex-direction: column;
-}
-
-#options {
-    height: auto;
-    flex: 1;
-    margin: 150px;
-    margin-bottom: 50px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.mobileUi #options {
-    margin: 50px;
-    margin-top: 0;
-}
-#buttons {
-    margin-top: 40px;
-    min-width: 320px;
-    font-size: 30px;
-    display: flex;
-    align-items: start;
-    flex-direction: column;
-}
-
-br {
-    margin: 15px;
-}
-
-#discordPlug {
-    height: 60px;
-    width: auto;
-    display: flex;
-
-    .icon {
-        height: 60px;
-        width: 60px;
-        background-image: url("/images/mail.png");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
+#home {
+    #root {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
     }
-    span {
-        margin-top: auto;
+
+    #top {
+        width: 100%;
+        flex: 2.5;
+        display: flex;
+        justify-content: end;
+    }
+
+    #title {
+        flex: 1;
+        min-height: 160px;
+        margin: 50px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    #logo {
+        background-image: url("/images/osadle.png");
+        background-position: bottom right;
+        background-size: contain;
+        background-repeat: no-repeat;
+        flex: 7;
+        width: auto;
+    }
+    #subtitle {
+        text-align: right;
+        width: auto;
+        margin-right: 15px;
+        font-size: 40px;
+    }
+    .mobileUi #subtitle {
+        font-size: 30px;
+    }
+    #wip {
+        height: auto;
+        aspect-ratio: 1;
+        margin: 70px;
+        margin-right: 0px;
+        background-image: url("/images/wip.png");
+        background-position: bottom right;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .mobileUi #wip {
         display: none;
     }
-}
 
-/* an iq too low */
-.mobileUi #discordPlug span,
-#discordPlug:has(.icon:hover) span {
-    display: block;
-}
+    #bottom {
+        width: 100%;
+        flex: 5;
+        display: flex;
+    }
 
-#pagesTitle {
-    text-align: right;
-    width: auto;
-    position: absolute;
-    top: -20px;
-    right: 0px;
-}
+    #left {
+        height: auto;
+        flex: 4;
+        display: flex;
+        flex-direction: column;
+    }
 
-#right {
-    height: auto;
-    flex: 3;
-    display: flex;
-}
-.mobileUi #right {
-    display: none;
-}
+    #options {
+        height: auto;
+        flex: 1;
+        margin: 150px;
+        margin-bottom: 50px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
 
-#randomOsage {
-    height: auto;
-    flex: 1;
-    background-image: url("/images/yoyuyoku/right.png");
-    background-position: bottom right;
-    background-size: contain;
-    background-repeat: no-repeat;
+    .mobileUi #options {
+        margin: 50px;
+        margin-top: 0;
+    }
+    #buttons {
+        margin-top: 40px;
+        min-width: 320px;
+        font-size: 30px;
+        display: flex;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    br {
+        margin: 15px;
+    }
+
+    #discordPlug {
+        height: 60px;
+        width: auto;
+        display: flex;
+
+        .icon {
+            height: 60px;
+            width: 60px;
+            background-image: url("/images/mail.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        span {
+            margin-top: auto;
+            display: none;
+        }
+    }
+
+    /* an iq too low */
+    .mobileUi #discordPlug span,
+    #discordPlug:has(.icon:hover) span {
+        display: block;
+    }
+
+    #pagesTitle {
+        text-align: right;
+        width: auto;
+        position: absolute;
+        top: -20px;
+        right: 0px;
+    }
+
+    #right {
+        height: auto;
+        flex: 3;
+        display: flex;
+    }
+    .mobileUi #right {
+        display: none;
+    }
+
+    #randomOsage {
+        height: auto;
+        flex: 1;
+        background-image: url("/images/yoyuyoku/right.png");
+        background-position: bottom right;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
 }

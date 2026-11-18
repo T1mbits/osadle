@@ -1,68 +1,182 @@
-.inputBox button {
-    border-width: 15px;
-    border-image-slice: 40 fill;
-}
+#song {
+    #osageLeft,
+    #osageRight {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+    }
 
-.guesses {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 5px;
-}
+    #osageLeft {
+        left: 0;
+        bottom: 0;
+        background-image: url("/images/yoyuyoku/left.png");
+        background-position: bottom left;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 
-.guess {
-    display: flex;
-    width: 100%;
-    height: 80px;
-    align-items: center;
-    justify-content: left;
-    gap: 15px;
-}
-.guess .thumb {
-    width: 96px;
-    height: 100%;
-    background-image: url("/images/guesses/question.png");
-    mask-image: url("/images/guesses/mask.png");
-    mask-size: contain;
-    mask-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative;
-}
+    #osageRight {
+        right: 0;
+        top: 0;
+        background-image: url("/images/watashiwaame.png");
+        background-position: bottom right;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
 
-.guess .thumb::after {
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    background-image: url("/images/guesses/outline.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
+    h1 {
+        margin-top: 35px;
+    }
+    .mobileUi h1 {
+        font-size: 30px;
+    }
+    #content {
+        display: flex;
+        flex: 1;
+        min-width: 45vw;
+    }
 
-.vert {
-    display: flex;
-    height: 50%;
-    flex-direction: column;
-}
-.guess .text {
-    display: block;
-    flex: 1;
-    height: 100%;
-}
+    #big-card {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        flex: 1;
+        margin: 35px;
+        margin-top: 0;
+        background-color: var(--bg);
+        border: 40px solid transparent;
+        border-image-outset: 15px;
+        border-image-source: url("/images/slices/boxed.png");
+        border-image-slice: 40 40 40 40;
+        border-image-repeat: stretch;
+        gap: 10px;
+    }
 
-.guess .name {
-    font-size: 20px;
-}
+    #top {
+        display: flex;
+        height: 150px;
+    }
 
-.loading {
-    opacity: 0.5;
-}
+    #disc {
+        width: 150px;
+        background-image: url("/images/disc.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    #stats {
+        justify-content: center;
+        flex: 1;
+        color: black;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 25px;
+        margin: 15px;
+    }
+    #play {
+        width: 200px;
+        border: 30px solid transparent;
+        border-image-source: url("/images/slices/button.png");
+        border-image-slice: 30 30 30 30;
+        border-image-repeat: stretch;
+        background-image: url("/images/play.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    #play.playing {
+        background-image: url("/images/pause.png");
+    }
 
-.inputBox {
-    position: relative;
+    #bottom {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        display: flex;
+        border: 15px solid transparent;
+        border-image-source: url("/images/slices/input.png");
+        border-image-slice: 15 15 15 15;
+        border-image-repeat: stretch;
+        flex: 1;
+        position: relative;
+    }
+    .thumb {
+        aspect-ratio: 1.5;
+        background-image: url("/images/disc.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        mask-image: url("/images/guesses/mask.png");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        position: relative;
+    }
+
+    .mobileUi .thumb {
+        aspect-ratio: unset;
+        width: 100px;
+        margin-right: 15px;
+    }
+    .thumb::after {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/images/guesses/outline.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .vert {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+    }
+
+    .songTitle {
+        font-size: 40px;
+        margin-top: auto;
+    }
+    .time {
+        opacity: 0.5;
+        color: black;
+        margin-top: auto;
+    }
+
+    #guessBox {
+        flex: 1;
+        display: flex;
+    }
+
+    #guessBox input {
+        border: 15px solid transparent;
+        border-image-source: url("/images/slices/input.png");
+        border-image-slice: 20 20 20 20;
+        border-image-repeat: fill;
+        background-color: #b2b2b2;
+        height: auto;
+        flex: 3;
+        max-height: 50px;
+        outline: none;
+        min-width: 0;
+        font-size: 20px;
+    }
+    #guessBox #guess {
+        border: 20px solid transparent;
+        border-image-source: url("/images/slices/button.png");
+        border-image-slice: 30 30 30 30;
+        border-image-repeat: fill;
+        max-height: 82px;
+        flex: 1;
+        font-size: 20px;
+    }
 }

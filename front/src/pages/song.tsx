@@ -1,205 +1,228 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import findAudio from "../lib/audio";
+import { createRef, JSX, RefObject, useEffect, useRef, useState } from "react";
+import useMobile from "../hooks/useMobile";
 import "./song.css";
-import { type Song, useToday } from "../hooks/useToday";
-import { setSave, useSave } from "../hooks/useSave";
-import { styleForImage } from "../lib/utils";
+import { Song, SongGame, Today } from "../hooks/useToday";
+import { modifySave, useGame } from "../hooks/useSave";
 import { SuggestionBox } from "../components/suggestionBox";
-import { Results } from "../components/results";
-import useHash from "../hooks/useHash";
-
-function GuessEntry({ song }: { song?: Song }) {
-    return (
-        <span className="guess">
-            <span style={styleForImage(song?.image)} className="thumb" />
-            {song ? (
-                <div className="vert">
-                    <span className="text name">{song.name}</span>
-                </div>
-            ) : undefined}
-        </span>
-    );
-}
-
-export type Custom = {
-    answer: Song;
-    start: number;
-};
+import { styleForImage } from "../lib/utils";
+import findAudio from "../lib/audio";
 
 const GUESS_INTERVALS = [0.5, 1, 2, 5, 7];
 
-// holy custom
-export default function GuessSong({
-    day,
-    audioUrl,
-    startPercent,
-    options,
-    answerId,
-    custom,
-}: {
-    day: string;
-    audioUrl: string;
-    startPercent: number;
-    options: Song[];
-    answerId: string;
-    custom?: Dispatch<SetStateAction<Custom | undefined>>;
-}) {
-    const state = useSave();
+export default function GuessSong({ today }: { today: Today }) {
+    const isMobile = useMobile();
+    const save = useGame("song", today.day);
+    const [guesses, setGuesses] = useState<string[]>(save?.guesses ?? []);
 
-    const [start, setStart] = useState<number | undefined>();
-    const [seconds, setSeconds] = useState<number>(GUESS_INTERVALS[0]);
+    const [gameData, setGameData] = useState<SongGame>(today.games.song);
+
+    const [input, setInput] = useState("");
+    const [top, setTop] = useState<Song>();
+    const [playing, setPlaying] = useState<
+        | {
+              source: AudioBufferSourceNode;
+              timeout: number;
+          }
+        | undefined
+    >();
+
     const [volume, setVolume] = useState<number>(0.25);
     const [buffer, setBuffer] = useState<AudioBuffer | undefined>();
-    const [typed, setTyped] = useState("");
-    const [first, setFirst] = useState<Song | undefined>();
+    const [audioStart, setStart] = useState<number>(0);
     const [context, _] = useState(new AudioContext());
-    const [guesses, setGuesses] = useState<Song[]>(
-        custom ? [] : (state.guesses ?? []),
-    );
-    const inp = useRef<HTMLInputElement>(null);
 
-    const correct = guesses[guesses.length - 1]
-        ? btoa(guesses[guesses.length - 1].id) === answerId
-        : false;
-    const finished = guesses.length >= GUESS_INTERVALS.length || correct;
-
-    if (!custom && state.lastDay !== Number(day)) {
-        state.guesses = [];
-        state.lastDay = Number(day);
-        setSave(state);
-        window.location.reload();
-    }
+    const inputRef = createRef<HTMLInputElement>();
 
     const submit = () => {
-        if (!first) return;
-
-        if (!custom) {
-            state.guesses = [...guesses, first];
-            state.lastDay = Number(day);
-            setSave(state);
+        if (save && top) {
+            setInput("");
+            save.guesses = [...guesses, top.id] as string[] as [];
+            modifySave("song", save);
+            setGuesses(save.guesses);
         }
-        setTyped("");
-        setGuesses([...guesses, first]);
-
-        if (correct) {
-            if (!custom) {
-                state.streak += 1;
-                state.streak = Math.min(state.streak, state.lastDay);
-            }
+    };
+    const playButtonCallback = () => {
+        if (!(audioStart && buffer)) return;
+        if (playing) {
+            playing.source.stop(0);
+            clearTimeout(playing.timeout);
+            setPlaying(undefined);
             return;
         }
-        if (finished) {
-            if (!custom) {
-                state.streak = 0;
-            }
-        } else {
-            setSeconds(
-                GUESS_INTERVALS[
-                    Math.min(GUESS_INTERVALS.length - 1, guesses.length + 1)
-                ],
-            );
+
+        if (!isMobile) {
+            inputRef.current?.focus();
         }
+
+        const seconds =
+            GUESS_INTERVALS[guesses.length] ??
+            GUESS_INTERVALS[GUESS_INTERVALS.length - 1];
+
+        const source = context.createBufferSource();
+        source.buffer = buffer;
+
+        const gain = context.createGain();
+        gain.gain.value = 0.5 * volume;
+        source.connect(gain);
+        gain.connect(context.destination);
+
+        setPlaying({
+            source,
+            timeout: setTimeout(() => {
+                setPlaying(undefined);
+            }, seconds * 1000),
+        });
+        source.start(0, audioStart);
+
+        source.stop(context.currentTime + seconds);
     };
 
     useEffect(() => {
-        findAudio(audioUrl, startPercent).then((d) => {
+        if (!isMobile) {
+            inputRef.current?.focus();
+        }
+    });
+    useEffect(() => {
+        const cb = (ev: KeyboardEvent) => {
+            if (ev.key === "Tab") {
+                playButtonCallback();
+                ev.preventDefault();
+            }
+        };
+        addEventListener("keydown", cb);
+
+        return () => {
+            removeEventListener("keydown", cb);
+        };
+    });
+    useEffect(() => {
+        findAudio(gameData.audio, gameData.start).then((d) => {
             if (!d) return alert("error");
             setStart(d.start);
 
             setBuffer(d.buffer);
         });
-    }, [audioUrl, startPercent]);
+    }, [gameData]);
 
     return (
         <>
-            <h1>osadle song #{custom ? "custom" : day}</h1>
-            <div className="box">
-                <p>volume</p>
-                <input
-                    type="range"
-                    max={100}
-                    min={0}
-                    value={volume * 100}
-                    onChange={(ev) => {
-                        setVolume(ev.target.valueAsNumber / 100);
-                    }}
-                />
-                <button
-                    type="button"
-                    className={buffer ? "" : "loading"}
-                    onClick={async () => {
-                        if (!(start && buffer)) return alert("not loaded");
-
-                        const source = context.createBufferSource();
-                        source.buffer = buffer;
-
-                        const gain = context.createGain();
-                        gain.gain.value = 0.5 * volume;
-                        source.connect(gain);
-                        gain.connect(context.destination);
-
-                        source.start(0, start);
-                        source.stop(context.currentTime + seconds);
-                        inp.current?.focus();
-                    }}
-                >
-                    {buffer
-                        ? `Play ${seconds} Second${seconds === 1 ? "" : "s"}`
-                        : "Loading..."}
-                </button>
-                <br />
-                <div className="guesses">
-                    {GUESS_INTERVALS.map((v, i) => {
-                        // biome-ignore lint/suspicious/noArrayIndexKey: i dont care
-                        return <GuessEntry key={i} song={guesses[i]} />;
-                    })}
-                </div>
-                <br />
-                <p>Seconds: {seconds}</p>
-                <div className="inputBox">
-                    <SuggestionBox
-                        songs={options}
-                        current={typed}
-                        setTopSuggestion={setFirst}
-                    />
-                    <input
-                        value={typed}
-                        onChange={(ev) => {
-                            setTyped(ev.target.value);
-                        }}
-                        onKeyDown={(ev) => {
-                            if (ev.key === "Enter") {
-                                submit();
+            <div className="bg">
+                <span id="osageLeft" />
+                <span id="osageRight" />
+            </div>
+            <h1>osadle song #1</h1>
+            <div id="content">
+                <div id="big-card">
+                    <div id="top">
+                        <button id="disc" type="button" />
+                        <span id="stats">
+                            <span>
+                                Using {GUESS_INTERVALS[guesses.length]}sec
+                            </span>
+                            <span>{guesses.length}/5</span>
+                            <span>volume:</span>
+                            <input
+                                type="range"
+                                min={0}
+                                max={100}
+                                onChange={(ev) => {
+                                    setVolume(
+                                        ev.currentTarget.valueAsNumber / 100,
+                                    );
+                                }}
+                                value={volume * 100}
+                            />
+                        </span>
+                        <button
+                            id="play"
+                            type="button"
+                            className={
+                                buffer ? (playing ? "playing" : "") : "disabled"
                             }
-                        }}
-                        disabled={finished}
-                        ref={inp}
-                    />
-                    <button type="button" onClick={submit} disabled={finished}>
-                        submit
-                    </button>
+                            onClick={playButtonCallback}
+                        />
+                    </div>
+                    <div id="bottom">
+                        {GUESS_INTERVALS.map((_, idx) => {
+                            return (
+                                <GuessCard
+                                    // biome-ignore lint/suspicious/noArrayIndexKey: it's constant anyway
+                                    key={idx}
+                                    isNext={idx === guesses.length}
+                                    guessCallback={submit}
+                                    inputCallback={(value) => {
+                                        setInput(value);
+                                    }}
+                                    inputRef={inputRef}
+
+                                    song={today.games.song.thumbnails.find(
+                                        (v) => {
+                                            return v.id === guesses[idx];
+                                        },
+                                    )}
+                                >
+                                    <SuggestionBox
+                                        songs={today.games.song.thumbnails}
+                                        setTopSuggestion={setTop}
+                                        current={input}
+                                    />
+                                </GuessCard>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
-            {finished ? (
-                <Results
-                    title={
-                        custom ? "custom osadle song" : `osadle song #${day}`
-                    }
-                    longest={seconds}
-                    guessAmount={guesses.length}
-                    answer={options.find((a) => {
-                        return a.id === atob(answerId);
-                    })}
-                    correct={correct}
-                    custom={
-                        custom
-                            ? () => {
-                                  window.location.reload();
-                              }
-                            : undefined
-                    }
-                />
-            ) : null}
         </>
+    );
+}
+function GuessCard({
+    guessCallback,
+    inputCallback,
+    inputRef,
+    isNext = false,
+    song,
+    children,
+}: {
+    guessCallback: () => void;
+    inputCallback: (v: string) => void;
+    inputRef: RefObject<HTMLInputElement | null>;
+    isNext?: boolean;
+    song?: Song;
+    children?: JSX.Element;
+}) {
+    return (
+        <div className="card">
+            <span className="thumb" style={styleForImage(song?.image)} />
+            <div className="vert">
+                {isNext ? (
+                    <div id="guessBox">
+                        {children}
+                        <input
+                            onChange={(ev) => {
+                                inputCallback(ev.currentTarget.value);
+                            }}
+                            onKeyDown={(ev) => {
+                                if (ev.key === "Enter") {
+                                    guessCallback();
+                                }
+                            }}
+                            ref={isNext ? inputRef : undefined}
+                        />
+                        <button
+                            type="button"
+                            id="guess"
+                            onClick={guessCallback}
+                        >
+                            guess
+                        </button>
+                    </div>
+                ) : (
+                    <span className="songTitle">{song?.name ?? "?"}</span>
+                )}
+                <span className="time">
+                    {isNext ? "type your guess above" : " "}
+                </span>
+            </div>
+        </div>
     );
 }

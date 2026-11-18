@@ -10,13 +10,19 @@ export type Song = {
 	audio?: string;
 };
 
-export type Today = {
-	day: number;
-	time: number;
+export type SongGame = {
 	answer: string;
 	audio: string;
 	start: number;
 	thumbnails: Song[];
+};
+
+export type Today = {
+	day: number;
+	time: number;
+	games: {
+		song: SongGame;
+	};
 };
 export function useToday() {
 	const [today, setToday] = useState<Today | undefined>(undefined);

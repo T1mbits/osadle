@@ -23,20 +23,24 @@ export function routes(app: RouterType) {
 			_: "you know what you're doing, don't you? don't do it !!",
 			day: last.day,
 			time: last.time,
-			answer: btoa(last.songId),
+			games: {
+				song: {
+					answer: btoa(last.songId),
 
-			audio: new URL(song.audioHash, audioBase),
-			start: last.startPercent,
+					audio: new URL(song.audioHash, audioBase),
+					start: last.startPercent,
 
-			thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
-				return {
-					id: a.songId,
-					name: a.commonName,
-					aliases: a.aliases,
-					image: new URL(a.imageHash, imgBase),
-					audio: new URL(a.audioHash, audioBase),
-				};
-			}),
+					thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
+						return {
+							id: a.songId,
+							name: a.commonName,
+							aliases: a.aliases,
+							image: new URL(a.imageHash, imgBase),
+							audio: new URL(a.audioHash, audioBase),
+						};
+					}),
+				},
+			},
 		});
 	});
 }
