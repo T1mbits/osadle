@@ -15,7 +15,7 @@ function get(): Save {
     const raw = JSON.parse(localStorage.getItem("osadle") ?? "{}");
     return {
         lastDay: raw.lastDay ?? 0,
-        games: new Map(Object.entries(raw.games)),
+        games: new Map(Object.entries(raw.games ?? {})),
     };
 }
 
