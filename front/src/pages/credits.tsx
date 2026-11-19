@@ -85,6 +85,17 @@ export default function Credits() {
                             },
                         ]}
                     />
+                    <PersonCard
+                        name="Vlusky"
+                        contribution="title font! (not used in the logo)"
+                        iconUrl="/images/credits/vlusky.png"
+                        socials={[
+                            {
+                                name: "X/Twitter",
+                                url: "https://x.com/vlusky_husky",
+                            },
+                        ]}
+                    />
                 </div>
                 <span className="loadingFish" />
             </div>

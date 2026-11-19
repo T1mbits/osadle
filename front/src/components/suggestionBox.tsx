@@ -36,30 +36,32 @@ export function SuggestionBox({
     const score = (x: string) => {
         let n = 0;
         if (x.toLowerCase().includes(query)) {
-            n += 1;
-        }
-        if (x.toLowerCase().startsWith(query)) {
             n += 10;
         }
-        return n;
+        if (x.toLowerCase().startsWith(query)) {
+            n += 100;
+        }
+        return n + (x.length - Math.abs(x.length - query.length));
     };
 
     const scoreSong = (x: Song) => {
         let n = score(x.name) * 100;
-        const lengthDiff = Math.abs(x.name.length - query.length);
 
         x.aliases.forEach((alias) => {
             n += score(alias);
         });
 
-        return n - lengthDiff;
+        return n;
     };
 
     inc.sort((a, b) => {
         return scoreSong(b) - scoreSong(a);
     });
+    const ref = scoreSong(inc[0]);
+
     const showing = inc.filter((a) => {
-        return scoreSong(a) > 0;
+        const s = scoreSong(a);
+        return s > ref * 0.5;
     });
     setTopSuggestion(showing[0]);
 
