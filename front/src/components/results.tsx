@@ -36,6 +36,10 @@ export function Results({
                     Attempts: {isCorrect ? attempts : "X"}
                     {max ? `/${max}` : ""}
                 </span>
+
+                {isCorrect ? undefined : (
+                    <span className="disabled">holy larps btw</span>
+                )}
                 {children}
                 <div id="resultsButtons">
                     {copyable ? (
