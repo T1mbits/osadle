@@ -1,5 +1,6 @@
 import { IttyRouter, type RouterType } from "itty-router";
 
+import { legacyHistory } from "./db/schema.ts";
 import { InitDb } from "./db/sql.ts";
 import getGames from "./games/index.ts";
 import SongGame from "./games/song.ts";
@@ -49,9 +50,10 @@ export default {
     ) {
         const sql = InitDb(env.osadle);
         const games = await getGames();
+        await sql.history.migrateV1ToV2();
 
         const last = await sql.history.last();
-        if (last == null || last.time + 1000 < Math.ceil(Date.now())) {
+        if (last == null || last.time + ONE_DAY < Math.ceil(Date.now())) {
             const nextDay = (last?.day ?? 0) + 1;
             const seeds: Record<string, number> = {};
             games.forEach((game) => {

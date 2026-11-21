@@ -63,6 +63,27 @@ export function InitDb(d1Db: D1Database) {
             },
         },
         history: {
+            migrateV1ToV2: async () => {
+                const oldHistory = await db
+                    .select()
+                    .from(schema.legacyHistory)
+                    .all();
+
+                const newHistory = await db.select().from(schema.history).all();
+
+                const existingDays = newHistory.map((n) => {
+                    return n.day;
+                });
+
+                // once in a life time for loop instead of forEach from me (cos async)
+                for (const old of oldHistory) {
+                    if (!existingDays.includes(old.day)) {
+                        await sql.history.new(old.day, old.time, {});
+                        existingDays.push(old.day);
+                    }
+                }
+            },
+
             last: async (): Promise<schema.History | undefined> => {
                 return await db
                     .select()

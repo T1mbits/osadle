@@ -6,6 +6,8 @@
     "scripts": {
         "dev": "vite build && wrangler dev",
         "dev:front": "vite build --watch",
+        "db:gen": "npx drizzle-kit generate",
+        "db:apply": "echo how about you run it yourself?; echo npx wrangler d1 migrations apply osadle --local",
         "start": "vite build && wrangler deploy",
         "format": "biome format --write .",
         "lint": "biome lint .",

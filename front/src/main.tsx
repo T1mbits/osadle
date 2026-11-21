@@ -2,7 +2,6 @@ import Landing from "./pages/landing";
 import "./global.css";
 import { useEffect, useState } from "react";
 
-import { OsadleGameConfig } from "../../shared/game";
 import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
 import Credits from "./pages/credits";

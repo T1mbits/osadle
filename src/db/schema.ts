@@ -20,6 +20,13 @@ export const history = sqliteTable("newHistory", {
         .notNull(),
 });
 
+export const legacyHistory = sqliteTable("history", {
+    day: integer("day").primaryKey(),
+    time: integer("time").notNull().unique(),
+    songId: text("songId").notNull(),
+    startPercent: integer("startPercent").notNull(),
+});
+
 export const users = sqliteTable("users", {
     id: text("id").primaryKey(),
     username: text("username").notNull(),
