@@ -12,12 +12,11 @@ export const songs = sqliteTable("songs", {
     imageHash: text("imageHash").notNull(),
 });
 
-export const history = sqliteTable("newHistory", {
+export const history = sqliteTable("history", {
     day: integer("day").primaryKey(),
     time: integer("time").notNull().unique(),
-    seeds: text("seeds", { mode: "json" })
-        .$type<Record<string, number>>()
-        .notNull(),
+    songId: text("songId").notNull(),
+    startPercent: integer("startPercent").notNull(),
 });
 
 export const users = sqliteTable("users", {

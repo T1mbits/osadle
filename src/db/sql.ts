@@ -83,12 +83,14 @@ export function InitDb(d1Db: D1Database) {
             new: async (
                 day: number,
                 time: number,
-                seeds: Record<string, number>,
+                songId: string,
+                startPercent: number,
             ) => {
                 await db.insert(schema.history).values({
                     day,
                     time,
-                    seeds,
+                    songId,
+                    startPercent,
                 });
             },
         },

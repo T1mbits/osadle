@@ -1,5 +1,3 @@
-import type { OsadleGameConfig } from "../../../shared/game.ts";
-
 const BASE_API = "/api/";
 
 function uri(endpoint: string) {
@@ -58,18 +56,6 @@ export const api = {
         },
     },
     today: async () => {
-        return (await get(uri("today"))).content as Today;
+        return (await get(uri("today"))).content;
     },
-};
-
-export type OsadleGame = {
-    id: string;
-    seed: number;
-    game: OsadleGameConfig;
-};
-
-export type Today = {
-    day: number;
-    time: number;
-    games: OsadleGame[];
 };
