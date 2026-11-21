@@ -7,6 +7,7 @@ import { useToday } from "./hooks/useToday";
 import Credits from "./pages/credits";
 import ErrorPage from "./pages/error";
 import GuessSong from "./pages/games/song";
+import Archive from "./pages/archive";
 
 export default function Main() {
     const hash = useHash();
@@ -51,6 +52,11 @@ export default function Main() {
                     )}
                 </>
             ),
+        },
+        {
+            name: "archive",
+            hashes: ["#archive"],
+            element: <Archive />,
         },
     ];
     const page = map.find((a) => a.hashes.includes(hash));
