@@ -21,6 +21,9 @@ If you are editing frontend, run `npm run dev:front` to make it auto-update. (yo
 
 ## Notes
 
+- there are quite a bit of unused things there, (example, `/src/hooks/theme.ts`) just ignore them!
+- please dont remove my comments i think they're funny
+
 # Backend
 
 If you are editing backend, run `npm run dev` to start local server.
@@ -33,17 +36,19 @@ Unfortunately there is no way to really run the S3 locally (will work on it) so 
 
 You can run this pretty easily since `npx wrangler` lets you do this pretty easily. You should be running via `npm run dev` though.
 
+## Database things
+
+So, the way you'd generate the database is a little weird.
+
+- First you'd run `npm run db:gen` to create a auto-generated schema file (pulls from `/src/db/schema.ts`)
+    - This should create a directory with an `*.sql` file in `/drizzle/`.
+    - If you've already ran `db:run` before this, you need to manually (or not! sometimes it does it for you) remove the existing tables.
+- Second, run `npm run db:run`. This should sync it with the local cloudflare instance. (remember to restart wrangler when doing this)
+
 ## Structure
 
-- `/schema.sql`, `/src/lib/sql.ts` would have all the database related things
-    - When making entries that require serialization/deserialization, name the raw type like: `DbType` (where "Type" would be the name of the parsed type), and return `Type` in your helper function (like `get` or `list`)
-
-TODO
-
-## API
-
-- Make sure all API endpoints start with `/api/`
-
-TODO
-
-sorry for the TODOs im not done with a lot of backend changes so even if i wrote it it'd be outdated quick
+- There's not really a proper format to the backend, you can pretty much infer it from the files already there.
+    - use `response()` from `utils.ts` to respond to API calls
+    - new route categories (usually sorted by permission) go in `/src/routes/`
+    - gamemodes, of course, go in `/src/games/` (you will have to register in `/src/games/index.ts`)
+    - Make sure all API endpoints start with `/api/`
