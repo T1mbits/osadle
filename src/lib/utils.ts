@@ -26,3 +26,15 @@ export const withJson = async (request: IRequest) => {
         return yourFault("json");
     }
 };
+
+export function randomSeed(seed: number) {
+    let t = seed;
+    return () => {
+        // is it called mulberry cos of the color or what
+        // that's pretty cool
+        t = (t + 0x6d2b79f5) | 0;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}

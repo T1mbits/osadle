@@ -5,7 +5,7 @@ import { env } from "cloudflare:workers";
 export default async function SongGame(): Promise<OsadleGameConfig> {
     const songs = await sql.songs.list(env.osadle);
     return {
-        name: "osadle song",
+        id: "song",
         randomizer: {
             startPercent: {
                 type: "range",
@@ -18,6 +18,7 @@ export default async function SongGame(): Promise<OsadleGameConfig> {
                 options: songs.map((v) => {
                     return v.songId;
                 }),
+                avoidRepeats: true,
             },
         },
         data: {

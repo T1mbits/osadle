@@ -3,6 +3,7 @@ export type RandomizerValue = RandomizerOptions | RandomizerRange;
 export type RandomizerOptions = {
     type: "list";
     options: string[];
+    avoidRepeats?: boolean;
 };
 
 export type RandomizerRange = {
@@ -13,7 +14,7 @@ export type RandomizerRange = {
 };
 
 export type OsadleGameConfig = {
-    name: string;
+    id: string;
     randomizer: Record<string, RandomizerValue>;
     data: Record<string, unknown>;
 };

@@ -77,36 +77,40 @@ export const sql = {
         },
     },
     history: {
-        last: async (db: D1Database) => {
-            return <History | null>(
-                await db
-                    .prepare("SELECT * FROM history ORDER BY day DESC LIMIT 1")
-                    .first()
-            );
+        last: async (db: D1Database): Promise<History> => {
+            const raw: DbHistory | null = await db
+                .prepare("SELECT * FROM dailyHistory ORDER BY day DESC LIMIT 1")
+                .first();
+            return {
+                ...raw,
+                seeds: JSON.parse(raw?.seeds ?? "{}") as Record<string, number>,
+            } as History; // lmfao
         },
         recent: async (db: D1Database) => {
-            return <History[] | null>(
-                (<D1Result<History>>(
-                    await db
-                        .prepare(
-                            "SELECT * FROM history ORDER BY day DESC LIMIT 10",
-                        )
-                        .run()
-                )).results
-            );
+            return (<D1Result<DbHistory>>(
+                await db
+                    .prepare(
+                        "SELECT * FROM dailyHistory ORDER BY day DESC LIMIT 10",
+                    )
+                    .run()
+            )).results.map((v) => {
+                return {
+                    ...v,
+                    seeds: JSON.parse(v.seeds),
+                } as History;
+            });
         },
         new: async (
             db: D1Database,
             day: number,
             time: number,
-            songId: string,
-            startPercent: number,
+            seed: number,
         ) => {
             return await db
                 .prepare(
-                    "INSERT INTO history (day, time, songId, startPercent) VALUES (?,?,?,?)",
+                    "INSERT INTO dailyHistory (day, time, seed) VALUES (?,?,?)",
                 )
-                .bind(day, time, songId, startPercent)
+                .bind(day, time, seed)
                 .run();
         },
     },
@@ -131,6 +135,11 @@ export type Song = {
 export type History = {
     day: number;
     time: number;
-    songId: string;
-    startPercent: number;
+    seeds: Record<string, number>;
+};
+
+export type DbHistory = {
+    day: number;
+    time: number;
+    seeds: string;
 };
