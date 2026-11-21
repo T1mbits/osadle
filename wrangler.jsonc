@@ -2,6 +2,9 @@
     "name": "osadle",
     "main": "src/index.ts",
     "compatibility_date": "2026-11-13",
+    "build": {
+        "watch_dir": ["public", "src"],
+	},
     "observability": {
         "enabled": true
     },

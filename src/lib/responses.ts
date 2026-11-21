@@ -1,5 +1,4 @@
-// biome-ignore lint/suspicious/noExplicitAny: well its json
-export function response(content: any, status: number = 200) {
+export function response(content: unknown, status: number = 200) {
     return Response.json(
         {
             status,
