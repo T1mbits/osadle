@@ -3,21 +3,23 @@
     "main": "src/index.ts",
     "compatibility_date": "2026-11-13",
     "observability": {
-        "enabled": true
+        "enabled": true,
     },
     "triggers": {
-        "crons": ["0 * * * *"]
+        "crons": ["0 * * * *"],
     },
     "assets": {
         "directory": "./public",
         "binding": "public",
-        "run_worker_first": true
+        "run_worker_first": true,
     },
     "d1_databases": [
         {
             "binding": "osadle",
             "database_name": "osadle",
-            "database_id": "b094f8e8-df10-4eeb-9757-9fe21abc62a3"
-        }
-    ]
+            "database_id": "b094f8e8-df10-4eeb-9757-9fe21abc62a3",
+            "migrations_dir": "drizzle",
+            "migrations_pattern": "drizzle/*/migration.sql",
+        },
+    ],
 }

@@ -1,8 +1,8 @@
 import type { IRequest, RouterType } from "itty-router";
 
+import { InitDb } from "../db/sql.ts";
 import { notFound, response, yourFault } from "../lib/responses.ts";
 import { upload } from "../lib/s3.ts";
-import { sql } from "../lib/sql.ts";
 import { getCookie, withJson } from "../lib/utils.ts";
 import { env } from "cloudflare:workers";
 
@@ -24,7 +24,7 @@ export function adminRoutes(app: RouterType) {
     });
 
     app.get("/api/admin/songs/list", withAdmin, async (_request) => {
-        return response(await sql.songs.list(env.osadle));
+        return response(await InitDb(env.osadle).songs.list());
     });
 
     app.post("/api/admin/songs/upload", withAdmin, async (request) => {
@@ -43,7 +43,7 @@ export function adminRoutes(app: RouterType) {
         const imageHash = await upload("thumbnails", image, "image/png");
         const audioHash = await upload("music", audio, "audio/mpeg");
 
-        await sql.songs.upload(env.osadle, id, name, audioHash, imageHash);
+        await InitDb(env.osadle).songs.upload(id, name, audioHash, imageHash);
 
         return response("ok");
     });
@@ -55,7 +55,7 @@ export function adminRoutes(app: RouterType) {
         async (request) => {
             const data = request.content;
 
-            await sql.songs.delete(env.osadle, data.id);
+            await InitDb(env.osadle).songs.delete(data.id);
 
             return response("ok");
         },
@@ -68,7 +68,11 @@ export function adminRoutes(app: RouterType) {
         async (request) => {
             const data = request.content;
 
-            await sql.songs.aliases(env.osadle, data.id, data.add, data.remove);
+            await InitDb(env.osadle).songs.aliases(
+                data.id,
+                data.add,
+                data.remove,
+            );
 
             return response("ok");
         },
