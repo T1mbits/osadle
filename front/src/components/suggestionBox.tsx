@@ -1,37 +1,49 @@
 import type { Dispatch, SetStateAction } from "react";
 import "./suggestionBox.css";
 
-import type { Song } from "../hooks/useToday";
 import { styleForImage } from "../lib/utils";
 
-function Suggestion({ song, usedAlias }: { song: Song; usedAlias: string }) {
+type GenericOsadleValue = {
+    id: string;
+    name: string;
+    aliases: string[];
+    image?: string;
+};
+
+function Suggestion({
+    choice,
+    usedAlias,
+}: {
+    choice: GenericOsadleValue;
+    usedAlias: string;
+}) {
     return (
         <span className="suggestion">
             <span
-                style={styleForImage(song?.image)}
+                style={styleForImage(choice?.image)}
                 className="suggestionThumb"
             />
-            <span className="name">{song.name}</span>
+            <span className="name">{choice.name}</span>
             <span className="usedAlias">{usedAlias}</span>
         </span>
     );
 }
 
-export function SuggestionBox({
-    songs,
+export function SuggestionBox<T extends GenericOsadleValue>({
+    choices,
     current,
     setTopSuggestion,
 }: {
-    songs: Song[];
+    choices: T[];
     current: string;
-    setTopSuggestion: Dispatch<SetStateAction<Song | undefined>>;
+    setTopSuggestion: Dispatch<SetStateAction<T | undefined>>;
 }) {
     const query = current.toLowerCase();
     if (query.length < 1) {
         setTopSuggestion(undefined);
         return;
     }
-    const inc = songs;
+    const inc = choices;
 
     const score = (x: string) => {
         let n = 0;
@@ -44,7 +56,7 @@ export function SuggestionBox({
         return n + (x.length - Math.abs(x.length - query.length));
     };
 
-    const scoreSong = (x: Song) => {
+    const scoreSong = (x: T) => {
         let n = score(x.name) * 100;
 
         x.aliases.forEach((alias) => {
@@ -70,7 +82,7 @@ export function SuggestionBox({
             {showing.slice(0, 5).map((s) => {
                 return (
                     <Suggestion
-                        song={s}
+                        choice={s}
                         usedAlias={
                             s.aliases.find((a) => {
                                 return a.toLowerCase().includes(query);

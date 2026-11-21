@@ -1,9 +1,19 @@
+import type { OsadleGameConfig } from "../../shared/game.ts";
 import { InitDb } from "../db/sql.ts";
-import type { OsadleGameConfig } from "./index.ts";
 import { env } from "cloudflare:workers";
 
 export default async function SongGame(): Promise<OsadleGameConfig> {
     const songs = await InitDb(env.osadle).songs.list();
+
+    const imgBase = new URL(
+        "/storage/v1/object/public/thumbnails/",
+        env.S3_ENDPOINT,
+    );
+    const audioBase = new URL(
+        "/storage/v1/object/public/music/",
+        env.S3_ENDPOINT,
+    );
+
     return {
         id: "song",
         randomizer: {
@@ -22,7 +32,15 @@ export default async function SongGame(): Promise<OsadleGameConfig> {
             },
         },
         data: {
-            songs,
+            songs: songs.map((a) => {
+                return {
+                    id: a.songId,
+                    name: a.commonName,
+                    aliases: a.aliases,
+                    image: new URL(a.imageHash, imgBase),
+                    audio: new URL(a.audioHash, audioBase),
+                };
+            }),
         },
     };
 }

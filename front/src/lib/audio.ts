@@ -4,6 +4,7 @@ export default async function findAudio(
     audioUrl: string,
     startPercent: number,
 ) {
+    // purpose of this function is to find a portion after startPercent% of the song that is not silent
     const context = new AudioContext();
 
     try {
