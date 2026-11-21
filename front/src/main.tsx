@@ -2,6 +2,7 @@ import Landing from "./pages/landing";
 import "./global.css";
 import { useEffect, useState } from "react";
 
+import { OsadleGameConfig } from "../../shared/game";
 import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
 import Credits from "./pages/credits";
@@ -22,6 +23,16 @@ export default function Main() {
     }, []);
     document.getElementById("root")?.classList.toggle("mobileUi", isMobile);
 
+    const todayFor = (game: string) => {
+        return today?.games.find((a) => {
+            return a.id === game;
+        });
+    };
+
+    const todays = {
+        song: todayFor("song"),
+    };
+
     const map = [
         { name: "home", hashes: ["", "#home"], element: <Landing /> },
         { name: "credits", hashes: ["#credits"], element: <Credits /> },
@@ -30,8 +41,12 @@ export default function Main() {
             hashes: ["#song"],
             element: (
                 <>
-                    {today ? (
-                        <GuessSong key={hash} today={today} />
+                    {today && todays.song ? (
+                        <GuessSong
+                            key={hash}
+                            today={today}
+                            todaysGame={todays.song}
+                        />
                     ) : (
                         <h1>loading</h1>
                     )}

@@ -1,8 +1,10 @@
 import { IttyRouter, type RouterType } from "itty-router";
 
 import { InitDb } from "./db/sql.ts";
+import getGames from "./games/index.ts";
+import SongGame from "./games/song.ts";
 import { ONE_DAY } from "./lib/constants.ts";
-import { getSongFor } from "./lib/picker.ts";
+import { getValidSeed } from "./lib/picker.ts";
 import { notFound } from "./lib/responses.ts";
 import { adminRoutes } from "./routes/admin.ts";
 import { routes } from "./routes/osadle.ts";
@@ -46,21 +48,20 @@ export default {
         _ctx: ExecutionContext,
     ) {
         const sql = InitDb(env.osadle);
+        const games = await getGames();
 
         const last = await sql.history.last();
-        if (last == null || last.time + ONE_DAY < Math.ceil(Date.now())) {
+        if (last == null || last.time + 1000 < Math.ceil(Date.now())) {
             const nextDay = (last?.day ?? 0) + 1;
-            const drawing = await getSongFor();
-
-            console.log(drawing?.songId);
-            if (drawing) {
-                await sql.history.new(
-                    nextDay,
-                    Math.ceil(Date.now()),
-                    drawing?.songId,
-                    Math.floor(Math.random() * 90),
+            const seeds: Record<string, number> = {};
+            games.forEach((game) => {
+                seeds[game.id] = getValidSeed(
+                    game.randomizer,
+                    last?.seeds[game.id],
                 );
-            }
+            });
+
+            await sql.history.new(nextDay, Math.ceil(Date.now()), seeds);
         }
         console.log(last?.time);
     },

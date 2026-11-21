@@ -1,32 +1,34 @@
-import type { Song } from "../db/schema.ts";
-import { InitDb } from "../db/sql.ts";
-import { env } from "cloudflare:workers";
+import type { RandomizerValue } from "../../shared/game.ts";
+import { fromSeed } from "../../shared/seed.ts";
 
-export async function getSongFor(): Promise<Song | undefined> {
-    const bucket = await getPossibilitiesFor();
-    console.log(bucket.length);
-    if (bucket.length === 0) {
-        return;
+export function getValidSeed(
+    randomizer: Record<string, RandomizerValue>,
+    lastSeed?: number,
+) {
+    let last: Record<string, string | number>;
+    if (lastSeed !== undefined) {
+        last = fromSeed(lastSeed, randomizer);
     }
 
-    const choice = bucket[Math.floor(Math.random() * bucket.length)];
-    return await InitDb(env.osadle).songs.get(choice ?? "lagtrain");
-}
+    let newSeed = 0;
+    let rerolls = 0;
+    while (rerolls < 100) {
+        let invalidated = false;
+        rerolls += 1;
 
-async function getPossibilitiesFor() {
-    const sql = InitDb(env.osadle);
-    const dbBlacklist = (await sql.history.recent()) ?? [];
-    const dbSongs = await sql.songs.list();
+        newSeed = Math.floor(Math.random() * 67676767);
+        const next = fromSeed(newSeed, randomizer);
 
-    const drawings = dbSongs.map((drawing) => {
-        return drawing.songId;
-    });
+        Object.entries(next).forEach(([key, value]) => {
+            if (last?.[key] === value) {
+                invalidated = true;
+            }
+        });
 
-    const blacklist = dbBlacklist.map((history) => {
-        return history.songId;
-    });
+        if (!invalidated) {
+            break;
+        }
+    }
 
-    console.log(drawings.length, blacklist.length);
-
-    return drawings.filter((d) => blacklist.find((b) => d === b) === undefined);
+    return newSeed;
 }

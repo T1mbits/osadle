@@ -3,27 +3,55 @@ import {
     type JSX,
     type RefObject,
     useEffect,
+    useMemo,
     useState,
 } from "react";
 
 import useMobile from "../../hooks/useMobile";
 import "./song.css";
 
+import { fromSeed } from "../../../../shared/seed";
 import { Results } from "../../components/results";
 import { SuggestionBox } from "../../components/suggestionBox";
 import { modifySave, useGame } from "../../hooks/useSave";
-import type { Song, SongGame, Today } from "../../hooks/useToday";
+import type { OsadleGame, Today } from "../../lib/api";
 import findAudio from "../../lib/audio";
 import { styleForImage } from "../../lib/utils";
 
 const GUESS_INTERVALS = [0.5, 1, 2, 5, 7];
 
-export default function GuessSong({ today }: { today: Today }) {
+export type Song = {
+    id: string;
+    name: string;
+    aliases: string[];
+    image: string;
+    audio?: string;
+};
+
+export default function GuessSong({
+    today,
+    todaysGame: daily,
+}: {
+    today: Today;
+    todaysGame: OsadleGame;
+}) {
     const isMobile = useMobile();
     const save = useGame("song", today.day);
     const [guesses, setGuesses] = useState<string[]>(save?.guesses ?? []);
 
-    const [gameData, setGameData] = useState<SongGame>(today.games.song);
+    const [seed, setSeed] = useState(daily.seed);
+    const gameData = useMemo(
+        () =>
+            fromSeed(seed, daily.game.randomizer) as {
+                songId: string;
+                startPercent: number;
+            },
+        [seed, daily.game.randomizer],
+    );
+    const songs = useMemo(() => {
+        return daily.game.data.songs as Song[];
+    }, [daily]);
+
     const [isCustom, setCustom] = useState<boolean>(false);
 
     const [input, setInput] = useState("");
@@ -41,8 +69,8 @@ export default function GuessSong({ today }: { today: Today }) {
     const [audioStart, setStart] = useState<number>(0);
     const [context, _] = useState(new AudioContext());
 
-    const correct = btoa(guesses[guesses.length - 1]) === gameData.answer;
-    const finished = correct || guesses.length >= GUESS_INTERVALS.length;
+    const isCorrect = guesses[guesses.length - 1] === gameData.songId;
+    const isFinished = isCorrect || guesses.length >= GUESS_INTERVALS.length;
 
     const inputRef = createRef<HTMLInputElement>();
 
@@ -114,21 +142,29 @@ export default function GuessSong({ today }: { today: Today }) {
         };
     });
     useEffect(() => {
-        findAudio(gameData.audio, gameData.start).then((d) => {
-            if (!d) return alert("error");
-            setStart(d.start);
+        const correctSong = songs.find((v) => {
+            return v.id === gameData.songId;
+        }) as Song;
+        console.log(correctSong);
+        findAudio(correctSong.audio ?? "why", gameData.startPercent).then(
+            (d) => {
+                if (!d) return alert("error");
+                setStart(d.start);
 
-            setBuffer(d.buffer);
-        });
-    }, [gameData]);
+                setBuffer(d.buffer);
+            },
+        );
+    }, [gameData, songs]);
 
-    return (
+    return songs ? (
         <>
             <div className="bg">
                 <span id="osageLeft" />
                 <span id="osageRight" />
             </div>
-            <h1>osadle song #{today.day}</h1>
+            <h1>
+                {isCustom ? `custom osadle song` : `osadle #${today.day}: song`}
+            </h1>
             <div id="content">
                 <div id="big-card">
                     <div id="top">
@@ -177,14 +213,12 @@ export default function GuessSong({ today }: { today: Today }) {
                                         setInput(value);
                                     }}
                                     inputRef={inputRef}
-                                    song={today.games.song.thumbnails.find(
-                                        (v) => {
-                                            return v.id === guesses[idx];
-                                        },
-                                    )}
+                                    song={songs.find((v) => {
+                                        return v.id === guesses[idx];
+                                    })}
                                 >
                                     <SuggestionBox
-                                        songs={today.games.song.thumbnails}
+                                        choices={songs}
                                         setTopSuggestion={setTop}
                                         current={input}
                                     />
@@ -194,7 +228,7 @@ export default function GuessSong({ today }: { today: Today }) {
                     </div>
                 </div>
             </div>
-            {finished ? (
+            {isFinished ? (
                 <Results
                     title={
                         isCustom
@@ -202,43 +236,29 @@ export default function GuessSong({ today }: { today: Today }) {
                             : `osadle song #${today.day}`
                     }
                     correctAnswer={
-                        gameData.thumbnails.find((v) => {
-                            return v.id === atob(gameData.answer); // i am literally the only one i can blame for needing to do this
+                        songs.find((v) => {
+                            return v.id === gameData.songId; // i am literally the only one i can blame for needing to do this
                         })?.name ?? "idk vro open ended question ig"
                     }
                     attempts={guesses.length}
                     maxAttempts={GUESS_INTERVALS.length}
                     copyable
-                    isCorrect={correct}
+                    isCorrect={isCorrect}
                     keepPlayingCallback={() => {
                         if (!buffer)
                             return alert(
                                 "wait for the song to load first sorry",
                             );
-                        const song =
-                            gameData.thumbnails[
-                                Math.floor(
-                                    Math.random() * gameData.thumbnails.length,
-                                )
-                            ];
                         setCustom(true);
                         setGuesses([]);
                         setBuffer(undefined);
-                        setGameData({
-                            ...gameData,
-                            audio:
-                                song.audio ??
-                                "i have no clue why you're optional btw",
-                            start: Math.floor(Math.random() * 90),
-                            answer: btoa(
-                                // yeah whatever
-                                song.id,
-                            ),
-                        });
+                        setSeed(Math.random() * 1000);
                     }}
                 ></Results>
             ) : null}
         </>
+    ) : (
+        <h1>loading</h1>
     );
 }
 function GuessCard({
