@@ -1,4 +1,5 @@
 import type { OsadleGameConfig } from "../../../shared/game.ts";
+import type { Archive } from "../../../shared/archive.ts";
 
 const BASE_API = "/api/";
 
@@ -60,6 +61,7 @@ export const api = {
     today: async () => {
         return (await get(uri("today"))).content as Today;
     },
+    archive: async () => (await get(uri("archive"))).content as Archive,
 };
 
 export type OsadleGame = {
