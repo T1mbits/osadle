@@ -76,6 +76,7 @@ export default function GuessSong({
 
     const submit = () => {
         if (!top) return;
+        if (isFinished) return;
         setInput("");
         if (isCustom) {
             setGuesses([...guesses, top.id]);
