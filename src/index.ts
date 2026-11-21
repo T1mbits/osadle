@@ -1,9 +1,7 @@
 import { IttyRouter, type RouterType } from "itty-router";
 
-import { legacyHistory } from "./db/schema.ts";
 import { InitDb } from "./db/sql.ts";
 import getGames from "./games/index.ts";
-import SongGame from "./games/song.ts";
 import { ONE_DAY } from "./lib/constants.ts";
 import { getValidSeed } from "./lib/picker.ts";
 import { notFound } from "./lib/responses.ts";

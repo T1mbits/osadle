@@ -2,7 +2,6 @@ import type { RouterType } from "itty-router";
 
 import { InitDb } from "../db/sql.ts";
 import getGames from "../games/index.ts";
-import SongGame from "../games/song.ts";
 import { response, serverFault } from "../lib/responses.ts";
 import { env } from "cloudflare:workers";
 

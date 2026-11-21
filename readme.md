@@ -1,5 +1,7 @@
 # osadle
 
+hi lol
+
 Play here: https://osadle.guhw.dev/
 
 ## for pull requests
