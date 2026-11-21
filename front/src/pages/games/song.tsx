@@ -6,15 +6,15 @@ import {
     useState,
 } from "react";
 
-import useMobile from "../hooks/useMobile";
+import useMobile from "../../hooks/useMobile";
 import "./song.css";
 
-import { Results } from "../components/results";
-import { SuggestionBox } from "../components/suggestionBox";
-import { modifySave, useGame } from "../hooks/useSave";
-import type { Song, SongGame, Today } from "../hooks/useToday";
-import findAudio from "../lib/audio";
-import { styleForImage } from "../lib/utils";
+import { Results } from "../../components/results";
+import { SuggestionBox } from "../../components/suggestionBox";
+import { modifySave, useGame } from "../../hooks/useSave";
+import type { Song, SongGame, Today } from "../../hooks/useToday";
+import findAudio from "../../lib/audio";
+import { styleForImage } from "../../lib/utils";
 
 const GUESS_INTERVALS = [0.5, 1, 2, 5, 7];
 

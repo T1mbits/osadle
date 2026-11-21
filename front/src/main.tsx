@@ -6,7 +6,7 @@ import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
 import Credits from "./pages/credits";
 import ErrorPage from "./pages/error";
-import GuessSong from "./pages/song";
+import GuessSong from "./pages/games/song";
 
 export default function Main() {
     const hash = useHash();
