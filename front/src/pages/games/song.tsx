@@ -145,7 +145,6 @@ export default function GuessSong({
         const correctSong = songs.find((v) => {
             return v.id === gameData.songId;
         }) as Song;
-        console.log(correctSong);
         findAudio(correctSong.audio ?? "why", gameData.startPercent).then(
             (d) => {
                 if (!d) return alert("error");
