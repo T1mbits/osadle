@@ -4,3 +4,4 @@ test*
 .wrangler
 .env
 public/
+/drizzle/
