@@ -1,14 +1,17 @@
 import type { RouterType } from "itty-router";
 
+import { InitDb } from "../db/sql.ts";
 import { response, serverFault } from "../lib/responses.ts";
-import { type History, sql } from "../lib/sql.ts";
 import { env } from "cloudflare:workers";
 
 export function routes(app: RouterType) {
     app.get("/api/today/", async (_request) => {
-        const last: null | History = await sql.history.last(env.osadle);
+        const sql = InitDb(env.osadle);
+
+        const last = await sql.history.last();
         if (!last) return serverFault("nothing today");
-        const song = await sql.songs.get(env.osadle, last.songId);
+        const song = await sql.songs.get(last.songId);
+        if (!song) return serverFault("???");
 
         const imgBase = new URL(
             "/storage/v1/object/public/thumbnails/",
@@ -30,7 +33,7 @@ export function routes(app: RouterType) {
                     audio: new URL(song.audioHash, audioBase),
                     start: last.startPercent,
 
-                    thumbnails: (await sql.songs.list(env.osadle)).map((a) => {
+                    thumbnails: (await sql.songs.list()).map((a) => {
                         return {
                             id: a.songId,
                             name: a.commonName,

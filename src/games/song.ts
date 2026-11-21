@@ -1,9 +1,9 @@
-import { sql } from "../lib/sql.ts";
+import { InitDb } from "../db/sql.ts";
 import type { OsadleGameConfig } from "./index.ts";
 import { env } from "cloudflare:workers";
 
 export default async function SongGame(): Promise<OsadleGameConfig> {
-    const songs = await sql.songs.list(env.osadle);
+    const songs = await InitDb(env.osadle).songs.list();
     return {
         name: "osadle song",
         randomizer: {

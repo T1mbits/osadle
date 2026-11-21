@@ -1,9 +1,9 @@
 import { IttyRouter, type RouterType } from "itty-router";
 
+import { InitDb } from "./db/sql.ts";
 import { ONE_DAY } from "./lib/constants.ts";
 import { getSongFor } from "./lib/picker.ts";
 import { notFound } from "./lib/responses.ts";
-import { type History, sql } from "./lib/sql.ts";
 import { adminRoutes } from "./routes/admin.ts";
 import { routes } from "./routes/osadle.ts";
 import { env } from "cloudflare:workers";
@@ -45,7 +45,9 @@ export default {
         _appEnv: Env,
         _ctx: ExecutionContext,
     ) {
-        const last: null | History = await sql.history.last(env.osadle);
+        const sql = InitDb(env.osadle);
+
+        const last = await sql.history.last();
         if (last == null || last.time + ONE_DAY < Math.ceil(Date.now())) {
             const nextDay = (last?.day ?? 0) + 1;
             const drawing = await getSongFor();
@@ -53,7 +55,6 @@ export default {
             console.log(drawing?.songId);
             if (drawing) {
                 await sql.history.new(
-                    env.osadle,
                     nextDay,
                     Math.ceil(Date.now()),
                     drawing?.songId,
