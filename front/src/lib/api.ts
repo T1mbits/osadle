@@ -61,6 +61,7 @@ export const api = {
     today: async () => {
         return (await get(uri("today"))).content as Today;
     },
+    games: async () => (await get(uri("games"))).content as OsadleGameConfig[],
     archive: async () => (await get(uri("archive"))).content as Archive,
 };
 

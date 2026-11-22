@@ -6,8 +6,8 @@ import useHash from "./hooks/useHash";
 import { useToday } from "./hooks/useToday";
 import Credits from "./pages/credits";
 import ErrorPage from "./pages/error";
-import GuessSong from "./pages/games/song";
 import Archive from "./pages/archive";
+import GuessSongDaily from "./pages/games/dailySong";
 
 export default function Main() {
     const hash = useHash();
@@ -42,10 +42,10 @@ export default function Main() {
             element: (
                 <>
                     {today && todays.song ? (
-                        <GuessSong
+                        <GuessSongDaily
                             key={hash}
                             today={today}
-                            todaysGame={todays.song}
+                            dailySong={todays.song}
                         />
                     ) : (
                         <h1>loading</h1>

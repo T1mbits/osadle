@@ -30,6 +30,12 @@ export function routes(app: RouterType) {
         });
     });
 
+    app.get("/api/games/", async (_request) => {
+        const games = await getGames();
+
+        return response(games);
+    });
+
     app.get("/api/archive/", async (_request) => {
         const archive = await sql.history.archive();
 
