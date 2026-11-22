@@ -77,7 +77,7 @@ export function useArchiveSave(game: string) {
     save.archives.set(game, save.archives.get(game) ?? new Map());
 
     setSave(save);
-    return save.archives.get(game)!;
+    return save.archives.get(game);
 }
 
 export function setSave(save: Save) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../lib/api";
-import { Archive } from "../../../shared/archive";
+import type { Archive } from "../../../shared/archive";
 
 export function useArchive() {
     const [archive, setArchive] = useState<Archive>();
@@ -12,5 +12,5 @@ export function useArchive() {
         api.archive().then(setArchive);
     });
 
-    return archive!;
+    return archive;
 }

@@ -1,6 +1,6 @@
-import { History } from "../../../shared/archive";
+import type { History } from "../../../shared/archive";
 import { useArchive } from "../hooks/useArchive";
-import { GenericArchive, useArchiveSave } from "../hooks/useSave";
+import { type GenericArchive, useArchiveSave } from "../hooks/useSave";
 import { attemptEmojis } from "../lib/utils";
 
 import "./archive.css";
@@ -12,13 +12,14 @@ function ArchiveCard(
     return (
         <div className="archive-card">
             {Array.from(Object.entries(seeds)).map(([game, seed]) => (
-                <div className="game-info">
-                    <span
+                <div className="game-info" key={game}>
+                    <button
                         className="title"
+                        type="button"
                         onClick={() => console.log(game, seed)}
                     >
                         Daily {game} #{day}
-                    </span>
+                    </button>
                     <span className="attempts">
                         {archiveSave
                             ? attemptEmojis(
@@ -40,8 +41,12 @@ export default function Archive() {
 
     return (
         <>
-            {archive?.archive.map((history) =>
-                ArchiveCard(history, archiveSongSave.get(history.day)),
+            {archive && archiveSongSave ? (
+                archive.archive.map((history) =>
+                    ArchiveCard(history, archiveSongSave.get(history.day)),
+                )
+            ) : (
+                <h1>loading</h1>
             )}
         </>
     );
