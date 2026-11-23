@@ -143,6 +143,9 @@ export default function GuessSong({
         };
     });
     useEffect(() => {
+        alert(
+            "unfortunately, due to some miscalculations, this website will be down until around December.\n\nplease join the discord server (mail icon bottom left of homepage) for more information.\n\nTL;DR, windy poor windy haev no money catn payfor database",
+        );
         const correctSong = songs.find((v) => {
             return v.id === gameData.songId;
         }) as Song;
