@@ -8,6 +8,7 @@ import Credits from "./pages/credits";
 import ErrorPage from "./pages/error";
 import Archive from "./pages/archive";
 import GuessSongDaily from "./pages/games/dailySong";
+import LoadingFish from "./components/loadingFish";
 
 export default function Main() {
     const hash = useHash();
@@ -48,7 +49,7 @@ export default function Main() {
                             dailySong={todays.song}
                         />
                     ) : (
-                        <h1>loading</h1>
+                        <LoadingFish />
                     )}
                 </>
             ),

@@ -1,4 +1,5 @@
 import type { History } from "../../../shared/archive";
+import LoadingFish from "../components/loadingFish";
 import { useArchive } from "../hooks/useArchive";
 import { type GenericArchive, useArchiveSave } from "../hooks/useSave";
 import { attemptEmojis } from "../lib/utils";
@@ -46,7 +47,7 @@ export default function Archive() {
                     ArchiveCard(history, archiveSongSave.get(history.day)),
                 )
             ) : (
-                <h1>loading</h1>
+                <LoadingFish />
             )}
         </>
     );

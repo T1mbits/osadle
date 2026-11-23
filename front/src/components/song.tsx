@@ -16,6 +16,7 @@ import type { OsadleGame } from "../lib/api";
 import findAudio from "../lib/audio";
 import { styleForImage } from "../lib/utils";
 import { type Song, useSongs } from "../hooks/useGames";
+import LoadingFish from "./loadingFish";
 
 const GUESS_INTERVALS = [0.5, 1, 2, 5, 7];
 
@@ -323,7 +324,7 @@ export default function GuessSong({
                         ) : null}
                     </>
                 ) : (
-                    <h1>loading</h1>
+                    <LoadingFish />
                 )}
             </>
         ),
