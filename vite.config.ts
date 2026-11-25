@@ -14,6 +14,7 @@ export default defineConfig({
             input: {
                 main: resolve(import.meta.dirname, "front/index.html"),
                 admin: resolve(import.meta.dirname, "front/admin.html"),
+                archive: resolve(import.meta.dirname, "front/archive.html"),
             },
         },
     },

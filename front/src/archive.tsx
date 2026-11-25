@@ -1,9 +1,10 @@
-import type { History } from "../../../shared/archive";
-import LoadingFish from "../components/loadingFish";
-import { useArchive } from "../hooks/useArchive";
-import { type GenericArchive, useArchiveSave } from "../hooks/useSave";
-import { attemptEmojis } from "../lib/utils";
+import type { History } from "../../shared/archive";
+import LoadingFish from "./components/loadingFish";
+import { useArchive } from "./hooks/useArchive";
+import { type GenericArchive, useArchiveSave } from "./hooks/useSave";
+import { attemptEmojis } from "./lib/utils";
 
+import "./global.css";
 import "./archive.css";
 
 function ArchiveCard(
