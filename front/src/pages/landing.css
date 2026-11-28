@@ -1,12 +1,9 @@
-#root,
 main#home {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-}
 
-main#home {
     #top {
         width: 100%;
         flex: 2.5;
@@ -36,9 +33,6 @@ main#home {
         margin-right: 15px;
         font-size: 40px;
     }
-    .mobileUi #subtitle {
-        font-size: 30px;
-    }
     #wip {
         height: auto;
         aspect-ratio: 1;
@@ -48,10 +42,6 @@ main#home {
         background-position: bottom right;
         background-size: contain;
         background-repeat: no-repeat;
-    }
-
-    .mobileUi #wip {
-        display: none;
     }
 
     #bottom {
@@ -77,10 +67,6 @@ main#home {
         flex-direction: column;
     }
 
-    .mobileUi #options {
-        margin: 50px;
-        margin-top: 0;
-    }
     #buttons {
         margin-top: 40px;
         min-width: 320px;
@@ -92,11 +78,6 @@ main#home {
 
     br {
         margin: 15px;
-    }
-
-    /* an iq too low */
-    .mobileUi #discordPlug span {
-        display: block;
     }
 
     #discordPlug {
@@ -135,9 +116,6 @@ main#home {
         flex: 3;
         display: flex;
     }
-    .mobileUi #right {
-        display: none;
-    }
 
     #randomOsage {
         height: auto;
@@ -146,5 +124,29 @@ main#home {
         background-position: bottom right;
         background-size: contain;
         background-repeat: no-repeat;
+    }
+}
+
+#root.mobileUi main#home {
+    #subtitle {
+        font-size: 30px;
+    }
+
+    #wip {
+        display: none;
+    }
+
+    #options {
+        margin: 50px;
+        margin-top: 0;
+    }
+
+    /* an iq too low */
+    #discordPlug span {
+        display: block;
+    }
+
+    #right {
+        display: none;
     }
 }
