@@ -2,7 +2,7 @@ import "./landing.css";
 
 export default function Landing() {
     return (
-        <>
+        <main id="home">
             <div id="top">
                 <span id="wip" />
                 <span id="title">
@@ -42,6 +42,6 @@ export default function Landing() {
                     <span id="randomOsage" />
                 </div>
             </div>
-        </>
+        </main>
     );
 }

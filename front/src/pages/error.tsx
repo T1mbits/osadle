@@ -2,7 +2,7 @@ import "./error.css";
 
 export default function ErrorPage() {
     return (
-        <>
+        <main id="error">
             <div className="bg">
                 <span id="osage" />
             </div>
@@ -18,6 +18,6 @@ export default function ErrorPage() {
                 <br />
                 <a href="#home">go back?</a>
             </div>
-        </>
+        </main>
     );
 }

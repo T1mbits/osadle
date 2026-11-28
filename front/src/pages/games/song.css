@@ -7,7 +7,7 @@
         transform: rotate(-360deg);
     }
 }
-#song {
+main#song {
     #osageLeft,
     #osageRight {
         position: absolute;

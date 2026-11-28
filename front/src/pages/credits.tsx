@@ -43,7 +43,7 @@ function PersonCard({
 
 export default function Credits() {
     return (
-        <>
+        <main id="credits">
             <div className="bg">
                 <span id="osage" />
             </div>
@@ -99,6 +99,6 @@ export default function Credits() {
                 </div>
                 <span className="loadingFish" />
             </div>
-        </>
+        </main>
     );
 }
