@@ -19,12 +19,12 @@ export default function Landing() {
                         <h1 id="pagesTitle">pages</h1>
 
                         <div id="buttons">
-                            <a href="#song">Daily Song</a>
+                            <a href="/song">Daily Song</a>
                             <span className="disabled">
                                 More gamemodes soon...
                             </span>
                             <br></br>
-                            <a href="#credits">Credits</a>
+                            <a href="/credits">Credits</a>
                         </div>
                     </div>
                     <div id="discordPlug">

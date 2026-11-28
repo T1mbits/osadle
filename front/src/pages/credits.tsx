@@ -48,7 +48,7 @@ export default function Credits() {
                 <span id="osage" />
             </div>
             <div className="content">
-                <a href="#home">back?</a>
+                <a href="/">back?</a>
                 <span id="logo" />
                 <h2>credits</h2>
                 <div>

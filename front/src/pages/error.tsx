@@ -16,7 +16,7 @@ export default function ErrorPage() {
                     </span>
                 </p>
                 <br />
-                <a href="#home">go back?</a>
+                <a href="/">go home?</a>
             </div>
         </main>
     );
